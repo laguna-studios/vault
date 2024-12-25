@@ -1,0 +1,16 @@
+name: CICD
+run-name: Create Release On Push
+on:
+  push:
+
+jobs:
+  cicd:
+    runs-on: ubuntu-latest
+    name: CICD
+    steps:
+      - uses: laguna-studios/fhs@1.0.4
+        with:
+          qa: false
+          create_release: true
+          publish: false
+          
