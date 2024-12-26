@@ -1,7 +1,15 @@
 import "package:flutter/material.dart";
+import "package:gap/gap.dart";
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -9,20 +17,22 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         children: [
           Icon(Icons.fingerprint, size: 224),
-          TextField(),
+          TextField(controller: _controller),
           OutlinedButton(
-            onPressed: () => _openVault(context),
+            onPressed: _openVault,
             child: Text("Open Vault"),
           ),
           Row(
             children: [
-              Divider(),
+              Expanded(child: Divider()),
+              Gap(8),
               Text("OR"),
-              Divider(),
+              Gap(8),
+              Expanded(child: Divider()),
             ],
           ),
           TextButton(
-            onPressed: () => _createNewVault(context),
+            onPressed: _createNewVault,
             child: Text("Create New Vault"),
           ),
         ],
@@ -30,7 +40,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void _openVault(BuildContext context) {}
+  void _openVault() {
+    _controller.clear();
+  }
 
-  void _createNewVault(BuildContext context) {}
+  void _createNewVault() {}
 }
