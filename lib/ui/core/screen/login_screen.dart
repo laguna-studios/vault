@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gap/gap.dart";
+import "package:vault/context_extension.dart";
+import "package:vault/ui/core/screen/vault_screen.dart";
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +19,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         children: [
           Icon(Icons.fingerprint, size: 224),
-          TextField(controller: _controller),
+          TextField(
+            controller: _controller,
+            obscureText: true,
+          ),
           OutlinedButton(
             onPressed: _openVault,
             child: Text("Open Vault"),
@@ -41,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _openVault() {
+    context.go(VaultScreen());
     _controller.clear();
   }
 
