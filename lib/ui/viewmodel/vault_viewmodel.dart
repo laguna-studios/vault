@@ -94,7 +94,7 @@ class VaultViewModel extends ChangeNotifier {
       for (final PlatformFile file in result.files) {
         List<List<int>>? data = await file.readStream?.toList();
         if (data == null) continue;
-        await _vaultRepository.addFile(file.name, Uint8List.fromList(data.flatten()));
+        await _vaultRepository.addFile(join(location, file.name), Uint8List.fromList(data.flatten()));
       }
     } catch (e) {
       _error = e.toString();
