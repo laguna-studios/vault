@@ -158,21 +158,13 @@ class _GridItem extends StatelessWidget {
   final IconData icon;
   final String name;
 
-  const _GridItem({
-    required this.icon,
-    required this.name,
-  });
+  const _GridItem({required this.icon, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-            child: Center(
-                child: Icon(
-          icon,
-          size: 64,
-        ))),
+        Expanded(child: Center(child: Icon(icon, size: 64))),
         Text(name, maxLines: 1),
       ],
     );

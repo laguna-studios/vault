@@ -11,7 +11,7 @@ class VaultRepository {
 
   VaultRepository({required VaultDatasource vaultDatasource, required String vault})
       : _vaultDatasource = vaultDatasource,
-        _vault = vault; //sha256.convert(vault.codeUnits).toString();
+        _vault = sha256.convert(vault.codeUnits).toString();
 
   Future<void> createVault() async {
     final bool exists = await _vaultDatasource.directoryExists(_vault);
