@@ -11,7 +11,7 @@ class VaultRepository {
 
   VaultRepository({required VaultDatasource vaultDatasource, required String vault})
       : _vaultDatasource = vaultDatasource,
-        _vault = sha256.convert(vault.codeUnits).toString();
+        _vault = vault; //sha256.convert(vault.codeUnits).toString();
 
   Future<void> createVault() async {
     final bool exists = await _vaultDatasource.directoryExists(_vault);
@@ -19,8 +19,8 @@ class VaultRepository {
     return _vaultDatasource.createDirectory(_vault);
   }
 
-  Future<Iterable<FileSystemEntity>> listFiles() async {
-    return _vaultDatasource.listDirectory(_vault);
+  Future<Iterable<FileSystemEntity>> listFiles(String path) async {
+    return _vaultDatasource.listDirectory(join(_vault, path));
   }
 
   Future<void> addFile(String path, Uint8List data) async {

@@ -5,6 +5,7 @@ import "package:dartx/dartx.dart";
 import "package:dartx/dartx_io.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
+import "package:path/path.dart";
 import "package:vault/data/repository/vault_repository.dart";
 
 class VaultViewModel extends ChangeNotifier {
@@ -16,6 +17,7 @@ class VaultViewModel extends ChangeNotifier {
   bool _isListViewMode = true;
   String? _error;
   Iterable<FileSystemEntity> _items = [];
+  List<Directory> _location = [];
 
   VaultViewModel({required VaultRepository vaultRepository}) : _vaultRepository = vaultRepository;
 
@@ -28,8 +30,9 @@ class VaultViewModel extends ChangeNotifier {
 
   bool get isListViewMode => _isListViewMode;
   Iterable<FileSystemEntity> get items => _items;
+  String get location => joinAll(_location.map((e) => e.name));
 
-  void toggleFile(int index) {
+  void toggleItem(int index) {
     if (!_selectedFiles.add(_items.elementAt(index))) _selectedFiles.remove(_items.elementAt(index));
     notifyListeners();
   }
@@ -49,7 +52,7 @@ class VaultViewModel extends ChangeNotifier {
       _loading = true;
       notifyListeners();
 
-      _items = await _vaultRepository.listFiles();
+      _items = await _vaultRepository.listFiles(location);
       notifyListeners();
     } catch (e) {
       _error = e.toString();
@@ -69,6 +72,17 @@ class VaultViewModel extends ChangeNotifier {
     _selectedFiles.clear();
     notifyListeners();
 
+    loadVaultContent();
+  }
+
+  void enterDirectory(Directory directory) {
+    _location.add(directory);
+    loadVaultContent();
+  }
+
+  void goUp() {
+    if (_location.isEmpty) return;
+    _location.removeLast();
     loadVaultContent();
   }
 

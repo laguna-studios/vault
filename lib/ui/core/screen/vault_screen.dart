@@ -15,120 +15,194 @@ class VaultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final VaultViewModel viewModel = context.watch<VaultViewModel>();
 
-    return Scaffold(
-      appBar: viewModel.isSelectionActive
-          ? AppBar(
-              leading: IconButton(onPressed: viewModel.cancelSelection, icon: Icon(Icons.cancel)),
-              title: Text("${viewModel.selectedFiles.length} Files Selected"),
-              actions: [IconButton(onPressed: viewModel.selectAll, icon: Icon(Icons.select_all))],
-            )
-          : AppBar(
-              title: Text("Vault Name"),
-              actions: [
-                IconButton(
-                    onPressed: viewModel.toggleViewMode,
-                    icon: Icon(viewModel.isListViewMode ? Icons.list : Icons.grid_3x3)),
-                IconButton(
-                  onPressed: () => context.go(VaultSettingsScreen()),
-                  icon: Icon(Icons.settings),
-                ),
+    return PopScope(
+      canPop: viewModel.location.isEmpty,
+      onPopInvokedWithResult: (didPop, result) => viewModel.goUp(),
+      child: Scaffold(
+        appBar: viewModel.isSelectionActive
+            ? AppBar(
+                leading: IconButton(onPressed: viewModel.cancelSelection, icon: Icon(Icons.cancel)),
+                title: Text("${viewModel.selectedFiles.length} Files Selected"),
+                actions: [IconButton(onPressed: viewModel.selectAll, icon: Icon(Icons.select_all))],
+              )
+            : AppBar(
+                title: Text("Vault Name"),
+                bottom: PreferredSize(preferredSize: Size.zero, child: Text(viewModel.location)),
+                actions: [
+                  IconButton(
+                      onPressed: viewModel.toggleViewMode,
+                      icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list)),
+                  IconButton(
+                    onPressed: () => context.go(VaultSettingsScreen()),
+                    icon: Icon(Icons.settings),
+                  ),
+                ],
+              ),
+        body: Builder(
+          builder: (context) {
+            return Column(
+              children: [
+                if (viewModel.location.isNotEmpty)
+                  ListTile(
+                    leading: Icon(Icons.arrow_upward),
+                    title: Text("Go To Parent Directory"),
+                    onTap: viewModel.goUp,
+                  ),
+                if (viewModel.items.isEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Text("No Items Yet"),
+                    ),
+                  ),
+                if (viewModel.items.isNotEmpty)
+                  Expanded(
+                    child: viewModel.isListViewMode
+                        ? _ListViewVault(
+                            items: viewModel.items,
+                            selectedItems: viewModel.selectedFiles,
+                            onTap: (index) => _onTap(context, index),
+                            onLongPress: (index) => _onLongPress(context, index),
+                          )
+                        : _GridViewVault(
+                            items: viewModel.items,
+                            selectedItems: viewModel.selectedFiles,
+                            onTap: (index) => _onTap(context, index),
+                            onLongPress: (index) => _onLongPress(context, index),
+                          ),
+                  ),
               ],
-            ),
-      body: Builder(
-        builder: (context) {
-          if (viewModel.items.isEmpty)
-            return Center(
-              child: Text("No Items Yet"),
             );
-
-          return viewModel.isListViewMode
-              ? _ListViewVault(items: viewModel.items)
-              : _GridViewVault(items: viewModel.items);
-        },
+          },
+        ),
+        floatingActionButton: viewModel.isSelectionActive
+            ? FloatingActionButton.extended(
+                onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete))
+            : FloatingActionButton.extended(
+                onPressed: viewModel.addFiles,
+                label: Text("Add"),
+                icon: Icon(Icons.add),
+              ),
       ),
-      floatingActionButton: viewModel.isSelectionActive
-          ? FloatingActionButton.extended(
-              onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete))
-          : FloatingActionButton.extended(
-              onPressed: viewModel.addFiles,
-              label: Text("Add"),
-              icon: Icon(Icons.add),
-            ),
     );
+  }
+
+  void _onTap(BuildContext context, int index) {
+    final VaultViewModel viewModel = context.read();
+
+    if (viewModel.isSelectionActive) {
+      viewModel.toggleItem(index);
+      return;
+    }
+
+    final FileSystemEntity item = viewModel.items.elementAt(index);
+    if (item is Directory) {
+      viewModel.enterDirectory(item);
+      return;
+    }
+
+    context.go(ChangeNotifierProvider.value(value: viewModel, child: FileViewerScreen(index: index)));
+  }
+
+  void _onLongPress(BuildContext context, int index) {
+    final VaultViewModel viewModel = context.read();
+    viewModel.toggleItem(index);
   }
 }
 
 class _GridViewVault extends StatelessWidget {
   final Iterable<FileSystemEntity> items;
+  final Set<FileSystemEntity> selectedItems;
+  final Function(int index) onTap;
+  final Function(int index) onLongPress;
 
   const _GridViewVault({
-    super.key,
     required this.items,
+    required this.selectedItems,
+    required this.onTap,
+    required this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
-    final VaultViewModel viewModel = context.read();
-
     return GridView.builder(
       itemCount: items.length,
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8),
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: () {
-          if (viewModel.isSelectionActive) {
-            viewModel.toggleFile(index);
-            return;
-          }
+      itemBuilder: (context, index) {
+        final FileSystemEntity item = items.elementAt(index);
 
-          context.go(
-            ChangeNotifierProvider.value(value: context.read<VaultViewModel>(), child: FileViewerScreen(index: index)),
-          );
-        },
-        onLongPress: () => viewModel.toggleFile(index),
-        child: Container(
-          decoration: BoxDecoration(
-            border: viewModel.isSelectionActive ? Border.all(color: Colors.blue, width: 8) : null,
+        return GestureDetector(
+          onTap: () => onTap(index),
+          onLongPress: () => onLongPress(index),
+          child: Container(
+            decoration: BoxDecoration(
+              border: selectedItems.contains(item) ? Border.all(color: Colors.blue, width: 8) : null,
+            ),
+            child: switch (item) {
+              File() => Image.file(
+                  item,
+                  errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.name),
+                ),
+              Directory() => _GridItem(icon: Icons.folder, name: item.name),
+              _ => _GridItem(icon: Icons.question_mark, name: item.name),
+            },
           ),
-          child: Image.file(
-            items.elementAt(index) as File,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
+        );
+      },
+    );
+  }
+}
+
+class _GridItem extends StatelessWidget {
+  final IconData icon;
+  final String name;
+
+  const _GridItem({
+    required this.icon,
+    required this.name,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+            child: Center(
+                child: Icon(
+          icon,
+          size: 64,
+        ))),
+        Text(name, maxLines: 1),
+      ],
     );
   }
 }
 
 class _ListViewVault extends StatelessWidget {
   final Iterable<FileSystemEntity> items;
+  final Set<FileSystemEntity> selectedItems;
+  final Function(int index) onTap;
+  final Function(int index) onLongPress;
 
-  const _ListViewVault({super.key, required this.items});
+  const _ListViewVault(
+      {required this.items, required this.selectedItems, required this.onTap, required this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
-    final VaultViewModel viewModel = context.read();
-
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (_, __) => Divider(),
       itemCount: items.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(items.elementAt(index).name),
-        onTap: () {
-          if (viewModel.isSelectionActive) {
-            viewModel.toggleFile(index);
-            return;
-          }
+      itemBuilder: (context, index) {
+        final FileSystemEntity item = items.elementAt(index);
 
-          context.go(ChangeNotifierProvider.value(
-            value: context.read<VaultViewModel>(),
-            child: FileViewerScreen(
-              index: index,
-            ),
-          ));
-        },
-        selected: viewModel.selectedFiles.contains(items.elementAt(index)),
-        onLongPress: () => viewModel.toggleFile(index),
-      ),
+        return ListTile(
+          leading: Icon(item is Directory ? Icons.folder : Icons.file_open),
+          title: Text(item.name),
+          onTap: () => onTap(index),
+          selected: selectedItems.contains(item),
+          onLongPress: () => onLongPress(index),
+        );
+      },
     );
   }
 }
