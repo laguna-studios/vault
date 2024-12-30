@@ -1,6 +1,7 @@
 import "dart:io";
 import "dart:typed_data";
 
+import "package:crypto/crypto.dart";
 import "package:path/path.dart";
 import "package:vault/data/service/vault_datasource.dart";
 
@@ -10,7 +11,7 @@ class VaultRepository {
 
   VaultRepository({required VaultDatasource vaultDatasource, required String vault})
       : _vaultDatasource = vaultDatasource,
-        _vault = vault;
+        _vault = sha256.convert(vault.codeUnits).toString();
 
   Future<void> createVault() async {
     final bool exists = await _vaultDatasource.directoryExists(_vault);
