@@ -17,5 +17,5 @@ class VaultDatasource {
   Future<Iterable<FileSystemEntity>> listDirectory(String path) =>
       Directory(join(_rootDirectory.path, path)).list().toList();
   Future<Uint8List> readFile(String path) => File(join(_rootDirectory.path, path)).readAsBytes();
-  Future<void> deleteFile(String path) => File(join(_rootDirectory.path, path)).delete();
+  Future<void> deleteFile(String path) => File(join(_rootDirectory.path, path)).delete(recursive: true);
 }

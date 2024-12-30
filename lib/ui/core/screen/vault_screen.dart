@@ -141,6 +141,7 @@ class _GridViewVault extends StatelessWidget {
             child: switch (item) {
               File() => Image.file(
                   item,
+                  fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.name),
                 ),
               Directory() => _GridItem(icon: Icons.folder, name: item.name),

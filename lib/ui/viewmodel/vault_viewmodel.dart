@@ -67,7 +67,7 @@ class VaultViewModel extends ChangeNotifier {
 
   void deleteSelection() {
     for (final FileSystemEntity file in _selectedFiles) {
-      _vaultRepository.deleteFile(file.name);
+      _vaultRepository.deleteFile(join(location, file.name));
     }
     _selectedFiles.clear();
     notifyListeners();
