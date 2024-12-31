@@ -31,8 +31,8 @@ class _FileViewerScreenState extends State<FileViewerScreen> {
       backgroundColor: Colors.black,
       body: PageView.builder(
         controller: _pageController,
-        itemCount: viewModel.items.length,
-        itemBuilder: (context, index) => _FileViewer(viewModel.items.elementAt(index)),
+        itemCount: viewModel.files.length,
+        itemBuilder: (context, index) => _FileViewer(viewModel.files.elementAt(index)),
       ),
     );
   }

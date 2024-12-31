@@ -30,6 +30,7 @@ class VaultViewModel extends ChangeNotifier {
 
   bool get isListViewMode => _isListViewMode;
   Iterable<FileSystemEntity> get items => _items;
+  Iterable<File> get files => _items.whereType<File>();
   String get location => joinAll(_location.map((e) => e.name));
 
   void toggleItem(int index) {
@@ -56,6 +57,9 @@ class VaultViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _error = e.toString();
+      notifyListeners();
+    } finally {
+      _loading = false;
       notifyListeners();
     }
   }
@@ -101,5 +105,10 @@ class VaultViewModel extends ChangeNotifier {
     } finally {
       loadVaultContent();
     }
+  }
+
+  Future<void> createDirectory(String name) async {
+    _vaultRepository.createDirectory(join(location, name));
+    loadVaultContent();
   }
 }

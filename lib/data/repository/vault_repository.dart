@@ -30,4 +30,8 @@ class VaultRepository {
   Future<void> deleteFile(String path) async {
     _vaultDatasource.deleteFile(join(_vault, path));
   }
+
+  Future<void> createDirectory(String path) async {
+    _vaultDatasource.createDirectory(join(_vault, path));
+  }
 }

@@ -2,6 +2,7 @@ import "dart:io";
 
 import "package:dartx/dartx_io.dart";
 import "package:flutter/material.dart";
+import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/ui/core/screen/file_viewer_screen.dart";
@@ -40,6 +41,8 @@ class VaultScreen extends StatelessWidget {
               ),
         body: Builder(
           builder: (context) {
+            if (viewModel.loading) return Center(child: CircularProgressIndicator());
+
             return Column(
               children: [
                 if (viewModel.location.isNotEmpty)
@@ -77,13 +80,49 @@ class VaultScreen extends StatelessWidget {
         floatingActionButton: viewModel.isSelectionActive
             ? FloatingActionButton.extended(
                 onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete))
-            : FloatingActionButton.extended(
-                onPressed: viewModel.addFiles,
-                label: Text("Add"),
-                icon: Icon(Icons.add),
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton.extended(
+                    heroTag: 0,
+                    onPressed: viewModel.addFiles,
+                    label: Text("Add File"),
+                    icon: Icon(Icons.add),
+                  ),
+                  Gap(8),
+                  FloatingActionButton.extended(
+                    heroTag: 1,
+                    onPressed: () => _openCreateFolderDialog(context),
+                    label: Text("Create Folder"),
+                    icon: Icon(Icons.folder),
+                  ),
+                ],
               ),
       ),
     );
+  }
+
+  void _openCreateFolderDialog(BuildContext context) {
+    final VaultViewModel viewModel = context.read();
+    final TextEditingController controller = TextEditingController();
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Create New Folder"),
+            content: TextField(controller: controller),
+            actions: [
+              TextButton(onPressed: Navigator.of(context).pop, child: Text("Cancel")),
+              TextButton(
+                  onPressed: () {
+                    viewModel.createDirectory(controller.text);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK")),
+            ],
+          );
+        });
   }
 
   void _onTap(BuildContext context, int index) {
