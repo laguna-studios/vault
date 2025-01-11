@@ -68,7 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             vault: _controller.value.text,
           )..createVault(),
-        )..loadVaultContent(),
+        )
+          ..loadSettings()
+          ..loadVaultContent(),
         child: VaultScreen(),
       ),
     );

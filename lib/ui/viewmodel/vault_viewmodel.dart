@@ -1,11 +1,11 @@
 import "dart:io";
 import "dart:typed_data";
 
-import "package:dartx/dartx.dart";
 import "package:dartx/dartx_io.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:path/path.dart";
+import "package:vault/data/model/vault_settings.dart";
 import "package:vault/data/repository/vault_repository.dart";
 
 class VaultViewModel extends ChangeNotifier {
@@ -15,9 +15,10 @@ class VaultViewModel extends ChangeNotifier {
 
   bool _loading = false;
   bool _isListViewMode = true;
+  int _columnCount = 3;
   String? _error;
   Iterable<FileSystemEntity> _items = [];
-  List<Directory> _location = [];
+  final List<Directory> _location = [];
 
   VaultViewModel({required VaultRepository vaultRepository}) : _vaultRepository = vaultRepository;
 
@@ -29,9 +30,32 @@ class VaultViewModel extends ChangeNotifier {
   Set<FileSystemEntity> get selectedFiles => _selectedFiles;
 
   bool get isListViewMode => _isListViewMode;
+  int get columnCount => _columnCount;
   Iterable<FileSystemEntity> get items => _items;
   Iterable<File> get files => _items.whereType<File>();
   String get location => joinAll(_location.map((e) => e.name));
+
+  void loadSettings() async {
+    final VaultSettings settings = await _vaultRepository.loadVaultSettings();
+    _isListViewMode = settings.listView;
+    _columnCount = settings.columnCount;
+    notifyListeners();
+  }
+
+  Future<void> updateSettings({bool? listViewMode, int? columnCount}) async {
+    final VaultSettings settings = await _vaultRepository.loadVaultSettings();
+    _vaultRepository.saveVaultSettings(
+      settings.copyWith(
+        listView: listViewMode ?? settings.listView,
+        columnCount: columnCount ?? settings.columnCount,
+      ),
+    );
+
+    if (columnCount != null) {
+      _columnCount = columnCount;
+      notifyListeners();
+    }
+  }
 
   void toggleItem(int index) {
     if (!_selectedFiles.add(_items.elementAt(index))) _selectedFiles.remove(_items.elementAt(index));
@@ -98,7 +122,7 @@ class VaultViewModel extends ChangeNotifier {
       for (final PlatformFile file in result.files) {
         List<List<int>>? data = await file.readStream?.toList();
         if (data == null) continue;
-        await _vaultRepository.addFile(join(location, file.name), Uint8List.fromList(data.flatten()));
+        await _vaultRepository.writeFile(join(location, file.name), Uint8List.fromList(data.flatten()));
       }
     } catch (e) {
       _error = e.toString();

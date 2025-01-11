@@ -21,7 +21,7 @@ VaultSettings _$VaultSettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$VaultSettings {
   bool get listView => throw _privateConstructorUsedError;
-  int get rowCount => throw _privateConstructorUsedError;
+  int get columnCount => throw _privateConstructorUsedError;
 
   /// Serializes this VaultSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $VaultSettingsCopyWith<$Res> {
           VaultSettings value, $Res Function(VaultSettings) then) =
       _$VaultSettingsCopyWithImpl<$Res, VaultSettings>;
   @useResult
-  $Res call({bool listView, int rowCount});
+  $Res call({bool listView, int columnCount});
 }
 
 /// @nodoc
@@ -58,16 +58,16 @@ class _$VaultSettingsCopyWithImpl<$Res, $Val extends VaultSettings>
   @override
   $Res call({
     Object? listView = null,
-    Object? rowCount = null,
+    Object? columnCount = null,
   }) {
     return _then(_value.copyWith(
       listView: null == listView
           ? _value.listView
           : listView // ignore: cast_nullable_to_non_nullable
               as bool,
-      rowCount: null == rowCount
-          ? _value.rowCount
-          : rowCount // ignore: cast_nullable_to_non_nullable
+      columnCount: null == columnCount
+          ? _value.columnCount
+          : columnCount // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -81,7 +81,7 @@ abstract class _$$VaultSettingsImplCopyWith<$Res>
       __$$VaultSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool listView, int rowCount});
+  $Res call({bool listView, int columnCount});
 }
 
 /// @nodoc
@@ -98,16 +98,16 @@ class __$$VaultSettingsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? listView = null,
-    Object? rowCount = null,
+    Object? columnCount = null,
   }) {
     return _then(_$VaultSettingsImpl(
       listView: null == listView
           ? _value.listView
           : listView // ignore: cast_nullable_to_non_nullable
               as bool,
-      rowCount: null == rowCount
-          ? _value.rowCount
-          : rowCount // ignore: cast_nullable_to_non_nullable
+      columnCount: null == columnCount
+          ? _value.columnCount
+          : columnCount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -116,7 +116,7 @@ class __$$VaultSettingsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VaultSettingsImpl implements _VaultSettings {
-  _$VaultSettingsImpl({required this.listView, required this.rowCount});
+  _$VaultSettingsImpl({required this.listView, required this.columnCount});
 
   factory _$VaultSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$VaultSettingsImplFromJson(json);
@@ -124,11 +124,11 @@ class _$VaultSettingsImpl implements _VaultSettings {
   @override
   final bool listView;
   @override
-  final int rowCount;
+  final int columnCount;
 
   @override
   String toString() {
-    return 'VaultSettings(listView: $listView, rowCount: $rowCount)';
+    return 'VaultSettings(listView: $listView, columnCount: $columnCount)';
   }
 
   @override
@@ -138,13 +138,13 @@ class _$VaultSettingsImpl implements _VaultSettings {
             other is _$VaultSettingsImpl &&
             (identical(other.listView, listView) ||
                 other.listView == listView) &&
-            (identical(other.rowCount, rowCount) ||
-                other.rowCount == rowCount));
+            (identical(other.columnCount, columnCount) ||
+                other.columnCount == columnCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, listView, rowCount);
+  int get hashCode => Object.hash(runtimeType, listView, columnCount);
 
   /// Create a copy of VaultSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -165,7 +165,7 @@ class _$VaultSettingsImpl implements _VaultSettings {
 abstract class _VaultSettings implements VaultSettings {
   factory _VaultSettings(
       {required final bool listView,
-      required final int rowCount}) = _$VaultSettingsImpl;
+      required final int columnCount}) = _$VaultSettingsImpl;
 
   factory _VaultSettings.fromJson(Map<String, dynamic> json) =
       _$VaultSettingsImpl.fromJson;
@@ -173,7 +173,7 @@ abstract class _VaultSettings implements VaultSettings {
   @override
   bool get listView;
   @override
-  int get rowCount;
+  int get columnCount;
 
   /// Create a copy of VaultSettings
   /// with the given fields replaced by the non-null parameter values.

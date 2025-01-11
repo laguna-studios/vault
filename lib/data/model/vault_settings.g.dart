@@ -9,11 +9,11 @@ part of 'vault_settings.dart';
 _$VaultSettingsImpl _$$VaultSettingsImplFromJson(Map<String, dynamic> json) =>
     _$VaultSettingsImpl(
       listView: json['listView'] as bool,
-      rowCount: (json['rowCount'] as num).toInt(),
+      columnCount: (json['columnCount'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$VaultSettingsImplToJson(_$VaultSettingsImpl instance) =>
     <String, dynamic>{
       'listView': instance.listView,
-      'rowCount': instance.rowCount,
+      'columnCount': instance.columnCount,
     };

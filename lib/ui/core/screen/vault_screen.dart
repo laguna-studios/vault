@@ -32,7 +32,7 @@ class VaultScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                       onPressed: viewModel.toggleViewMode,
-                      icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list)),
+                      icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list),),
                   IconButton(
                     onPressed: () => context.go(VaultSettingsScreen()),
                     icon: Icon(Icons.settings),
@@ -79,7 +79,7 @@ class VaultScreen extends StatelessWidget {
         ),
         floatingActionButton: viewModel.isSelectionActive
             ? FloatingActionButton.extended(
-                onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete))
+                onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete),)
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -119,10 +119,10 @@ class VaultScreen extends StatelessWidget {
                     viewModel.createDirectory(controller.text);
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK")),
+                  child: Text("OK"),),
             ],
           );
-        });
+        },);
   }
 
   void _onTap(BuildContext context, int index) {
@@ -163,10 +163,12 @@ class _GridViewVault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int columnCount = context.select<VaultViewModel, int>((viewModel) => viewModel.columnCount);
+
     return GridView.builder(
       itemCount: items.length,
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8),
       itemBuilder: (context, index) {
         final FileSystemEntity item = items.elementAt(index);
 
@@ -217,7 +219,7 @@ class _ListViewVault extends StatelessWidget {
   final Function(int index) onLongPress;
 
   const _ListViewVault(
-      {required this.items, required this.selectedItems, required this.onTap, required this.onLongPress});
+      {required this.items, required this.selectedItems, required this.onTap, required this.onLongPress,});
 
   @override
   Widget build(BuildContext context) {
