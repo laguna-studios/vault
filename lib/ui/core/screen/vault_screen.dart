@@ -27,14 +27,18 @@ class VaultScreen extends StatelessWidget {
                 actions: [IconButton(onPressed: viewModel.selectAll, icon: Icon(Icons.select_all))],
               )
             : AppBar(
-                title: Text("Vault Name"),
+                title: Text("My Vault"),
+                centerTitle: true,
                 bottom: PreferredSize(preferredSize: Size.zero, child: Text(viewModel.location)),
                 actions: [
                   IconButton(
-                      onPressed: viewModel.toggleViewMode,
-                      icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list),),
+                    onPressed: viewModel.toggleViewMode,
+                    icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list),
+                  ),
                   IconButton(
-                    onPressed: () => context.go(VaultSettingsScreen()),
+                    onPressed: () => context.go(
+                      ChangeNotifierProvider<VaultViewModel>.value(value: context.read(), child: VaultSettingsScreen()),
+                    ),
                     icon: Icon(Icons.settings),
                   ),
                 ],
@@ -79,7 +83,10 @@ class VaultScreen extends StatelessWidget {
         ),
         floatingActionButton: viewModel.isSelectionActive
             ? FloatingActionButton.extended(
-                onPressed: viewModel.deleteSelection, label: Text("Delete"), icon: Icon(Icons.delete),)
+                onPressed: viewModel.deleteSelection,
+                label: Text("Delete"),
+                icon: Icon(Icons.delete),
+              )
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -107,22 +114,24 @@ class VaultScreen extends StatelessWidget {
     final TextEditingController controller = TextEditingController();
 
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Create New Folder"),
-            content: TextField(controller: controller),
-            actions: [
-              TextButton(onPressed: Navigator.of(context).pop, child: Text("Cancel")),
-              TextButton(
-                  onPressed: () {
-                    viewModel.createDirectory(controller.text);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK"),),
-            ],
-          );
-        },);
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Create New Folder"),
+          content: TextField(controller: controller),
+          actions: [
+            TextButton(onPressed: Navigator.of(context).pop, child: Text("Cancel")),
+            TextButton(
+              onPressed: () {
+                viewModel.createDirectory(controller.text);
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _onTap(BuildContext context, int index) {
@@ -167,8 +176,8 @@ class _GridViewVault extends StatelessWidget {
 
     return GridView.builder(
       itemCount: items.length,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8),
       itemBuilder: (context, index) {
         final FileSystemEntity item = items.elementAt(index);
 
@@ -218,8 +227,12 @@ class _ListViewVault extends StatelessWidget {
   final Function(int index) onTap;
   final Function(int index) onLongPress;
 
-  const _ListViewVault(
-      {required this.items, required this.selectedItems, required this.onTap, required this.onLongPress,});
+  const _ListViewVault({
+    required this.items,
+    required this.selectedItems,
+    required this.onTap,
+    required this.onLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {

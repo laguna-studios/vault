@@ -14,6 +14,7 @@ class VaultSettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           SwitchListTile.adaptive(
+            title: Text("Show files in a list instead of a grid"),
             value: vaultViewModel.isListViewMode,
             onChanged: (value) => vaultViewModel.updateSettings(listViewMode: value),
           ),
@@ -22,7 +23,8 @@ class VaultSettingsScreen extends StatelessWidget {
             subtitle: Text("Set the number of columns in grid view"),
             onTap: () => showDialog(
               context: context,
-              builder: (context) => ColumnDialog(initialValue: context.read<VaultViewModel>().columnCount),
+              builder: (_) => ChangeNotifierProvider<VaultViewModel>.value(
+                  value: vaultViewModel, child: ColumnDialog(initialValue: vaultViewModel.columnCount)),
             ),
           ),
         ],
@@ -61,7 +63,7 @@ class _ColumnDialogState extends State<ColumnDialog> {
 
   void _onSaveClicked(BuildContext context) {
     final VaultViewModel viewModel = context.read();
-    if (_formKey.currentState?.validate() ?? false) return;
+    if (_formKey.currentState?.validate() == false) return;
     viewModel.updateSettings(columnCount: int.parse(_textEditingController.text));
     Navigator.pop(context);
   }

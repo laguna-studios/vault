@@ -53,8 +53,11 @@ class VaultViewModel extends ChangeNotifier {
 
     if (columnCount != null) {
       _columnCount = columnCount;
-      notifyListeners();
     }
+    if (listViewMode != null) {
+      _isListViewMode = listViewMode;
+    }
+    notifyListeners();
   }
 
   void toggleItem(int index) {
@@ -78,6 +81,7 @@ class VaultViewModel extends ChangeNotifier {
       notifyListeners();
 
       _items = await _vaultRepository.listFiles(location);
+      _items = _items.whereNot((element) => element.name == "settings.json");
       notifyListeners();
     } catch (e) {
       _error = e.toString();

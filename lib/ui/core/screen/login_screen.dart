@@ -24,33 +24,40 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(Icons.fingerprint, size: 224),
-          TextField(
-            controller: _controller,
-            obscureText: true,
-            onSubmitted: (_) => _openVault(),
-          ),
-          OutlinedButton(
-            onPressed: _openVault,
-            child: Text("Open Vault"),
-          ),
-          Row(
-            children: [
-              Expanded(child: Divider()),
-              Gap(8),
-              Text("OR"),
-              Gap(8),
-              Expanded(child: Divider()),
-            ],
-          ),
-          TextButton(
-            onPressed: _createNewVault,
-            child: Text("Create New Vault"),
-          ),
-        ],
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text("Like"),
+            )
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.fingerprint, size: 224),
+            Gap(64),
+            SizedBox(
+              width: 320,
+              child: TextField(
+                controller: _controller,
+                obscureText: true,
+                onSubmitted: (_) => _openVault(),
+                decoration: InputDecoration(hintText: "Enter Your Vault's Name", border: OutlineInputBorder()),
+              ),
+            ),
+            Gap(16),
+            SizedBox(
+              width: 320,
+              child: OutlinedButton(
+                onPressed: _openVault,
+                child: Text("Open Vault"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
