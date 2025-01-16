@@ -3,9 +3,15 @@ import "dart:io";
 import "dart:typed_data";
 
 import "package:crypto/crypto.dart";
+import "package:dartx/dartx_io.dart";
+import "package:flutter/foundation.dart";
+import "package:image/image.dart";
 import "package:path/path.dart";
+import "package:vault/data/model/vault_item.dart";
 import "package:vault/data/model/vault_settings.dart";
 import "package:vault/data/service/vault_datasource.dart";
+import "package:vault/file_system_entity_extension.dart";
+import "package:video_thumbnail/video_thumbnail.dart" as vt;
 
 class VaultRepository {
   final VaultDatasource _vaultDatasource;
@@ -23,8 +29,14 @@ class VaultRepository {
     return _vaultDatasource.createDirectory(_vault);
   }
 
-  Future<Iterable<FileSystemEntity>> listFiles(String path) async {
-    return _vaultDatasource.listDirectory(join(_vault, path));
+  Future<Iterable<VaultItem>> listFiles(String path) async {
+    final Iterable<FileSystemEntity> items = await _vaultDatasource.listDirectory(join(_vault, path));
+    final List<VaultItem> result = [];
+    for (final item in items) {
+      result.add(VaultItem(item: item, thumbnail: await _getThumbnail(item)));
+    }
+
+    return result;
   }
 
   Future<void> writeFile(String path, Uint8List data) async {
@@ -44,11 +56,38 @@ class VaultRepository {
       String content = await _vaultDatasource.readFile(_settingsPath);
       return VaultSettings.fromJson(jsonDecode(content));
     } catch (_) {
-      return VaultSettings(listView: true, columnCount: 3);
+      return VaultSettings(listView: true, columnCount: 3, verticalScroll: true);
     }
   }
 
   Future<void> saveVaultSettings(VaultSettings settings) async {
     return _vaultDatasource.writeFileAsString(_settingsPath, jsonEncode(settings.toJson()));
+  }
+
+  Future<File?> _getThumbnail(FileSystemEntity item) async {
+    if (item is! File) return null;
+
+    final String thumbnailsDir = join(_vault, ".thumbs");
+
+    final File thumbnail = File("${item.path.replaceFirst(_vault, thumbnailsDir)}.thumb.jpg");
+    if (kReleaseMode && thumbnail.existsSync()) return thumbnail;
+
+    thumbnail.parent.createSync(recursive: true);
+    if (item.isImage) {
+      Image? image = await decodeImageFile(item.path);
+      if (image == null) return null;
+
+      image = copyResize(image, width: 512);
+      thumbnail.writeAsBytesSync(encodeJpg(image));
+      return thumbnail;
+    } else if (item.isVideo) {
+      final Uint8List? thumbnailData = await vt.VideoThumbnail.thumbnailData(
+          video: item.path, maxHeight: 512, maxWidth: 512, imageFormat: vt.ImageFormat.JPEG);
+      if (thumbnailData == null) return null;
+      thumbnail.writeAsBytesSync(thumbnailData);
+      return thumbnail;
+    }
+
+    return null;
   }
 }

@@ -24,21 +24,23 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
       drawer: Drawer(
         child: ListView(
           children: [
             ListTile(
               title: Text("Like"),
-            )
+            ),
           ],
         ),
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
+            Gap(120),
             Icon(Icons.fingerprint, size: 224),
-            Gap(64),
+            Gap(100),
             SizedBox(
               width: 320,
               child: TextField(

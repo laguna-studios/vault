@@ -5,19 +5,21 @@ import "package:dartx/dartx_io.dart";
 import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:path/path.dart";
+import "package:vault/data/model/vault_item.dart";
 import "package:vault/data/model/vault_settings.dart";
 import "package:vault/data/repository/vault_repository.dart";
 
 class VaultViewModel extends ChangeNotifier {
   final VaultRepository _vaultRepository;
 
-  final Set<FileSystemEntity> _selectedFiles = {};
+  final Set<VaultItem> _selectedFiles = {};
 
   bool _loading = false;
   bool _isListViewMode = true;
+  bool _isVerticalScroll = true;
   int _columnCount = 3;
   String? _error;
-  Iterable<FileSystemEntity> _items = [];
+  Iterable<VaultItem> _items = [];
   final List<Directory> _location = [];
 
   VaultViewModel({required VaultRepository vaultRepository}) : _vaultRepository = vaultRepository;
@@ -27,12 +29,13 @@ class VaultViewModel extends ChangeNotifier {
   String get error => _error!;
 
   bool get isSelectionActive => _selectedFiles.isNotEmpty;
-  Set<FileSystemEntity> get selectedFiles => _selectedFiles;
+  Set<VaultItem> get selectedFiles => _selectedFiles;
 
   bool get isListViewMode => _isListViewMode;
   int get columnCount => _columnCount;
-  Iterable<FileSystemEntity> get items => _items;
-  Iterable<File> get files => _items.whereType<File>();
+  bool get isVerticalScroll => _isVerticalScroll;
+  Iterable<VaultItem> get items => _items;
+  Iterable<VaultItem> get files => _items.where((file) => file.item is File);
   String get location => joinAll(_location.map((e) => e.name));
 
   void loadSettings() async {
@@ -42,12 +45,13 @@ class VaultViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateSettings({bool? listViewMode, int? columnCount}) async {
+  Future<void> updateSettings({bool? listViewMode, int? columnCount, bool? verticalScroll}) async {
     final VaultSettings settings = await _vaultRepository.loadVaultSettings();
     _vaultRepository.saveVaultSettings(
       settings.copyWith(
         listView: listViewMode ?? settings.listView,
         columnCount: columnCount ?? settings.columnCount,
+        verticalScroll: verticalScroll ?? settings.verticalScroll,
       ),
     );
 
@@ -56,6 +60,9 @@ class VaultViewModel extends ChangeNotifier {
     }
     if (listViewMode != null) {
       _isListViewMode = listViewMode;
+    }
+    if (verticalScroll != null) {
+      _isVerticalScroll = verticalScroll;
     }
     notifyListeners();
   }
@@ -81,7 +88,7 @@ class VaultViewModel extends ChangeNotifier {
       notifyListeners();
 
       _items = await _vaultRepository.listFiles(location);
-      _items = _items.whereNot((element) => element.name == "settings.json");
+      _items = _items.whereNot((element) => element.item.name == "settings.json" || element.item.name.startsWith("."));
       notifyListeners();
     } catch (e) {
       _error = e.toString();
@@ -98,8 +105,8 @@ class VaultViewModel extends ChangeNotifier {
   }
 
   void deleteSelection() {
-    for (final FileSystemEntity file in _selectedFiles) {
-      _vaultRepository.deleteFile(join(location, file.name));
+    for (final VaultItem file in _selectedFiles) {
+      _vaultRepository.deleteFile(join(location, file.item.name));
     }
     _selectedFiles.clear();
     notifyListeners();

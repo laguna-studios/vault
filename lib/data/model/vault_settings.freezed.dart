@@ -22,6 +22,7 @@ VaultSettings _$VaultSettingsFromJson(Map<String, dynamic> json) {
 mixin _$VaultSettings {
   bool get listView => throw _privateConstructorUsedError;
   int get columnCount => throw _privateConstructorUsedError;
+  bool get verticalScroll => throw _privateConstructorUsedError;
 
   /// Serializes this VaultSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $VaultSettingsCopyWith<$Res> {
           VaultSettings value, $Res Function(VaultSettings) then) =
       _$VaultSettingsCopyWithImpl<$Res, VaultSettings>;
   @useResult
-  $Res call({bool listView, int columnCount});
+  $Res call({bool listView, int columnCount, bool verticalScroll});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$VaultSettingsCopyWithImpl<$Res, $Val extends VaultSettings>
   $Res call({
     Object? listView = null,
     Object? columnCount = null,
+    Object? verticalScroll = null,
   }) {
     return _then(_value.copyWith(
       listView: null == listView
@@ -69,6 +71,10 @@ class _$VaultSettingsCopyWithImpl<$Res, $Val extends VaultSettings>
           ? _value.columnCount
           : columnCount // ignore: cast_nullable_to_non_nullable
               as int,
+      verticalScroll: null == verticalScroll
+          ? _value.verticalScroll
+          : verticalScroll // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -81,7 +87,7 @@ abstract class _$$VaultSettingsImplCopyWith<$Res>
       __$$VaultSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool listView, int columnCount});
+  $Res call({bool listView, int columnCount, bool verticalScroll});
 }
 
 /// @nodoc
@@ -99,6 +105,7 @@ class __$$VaultSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? listView = null,
     Object? columnCount = null,
+    Object? verticalScroll = null,
   }) {
     return _then(_$VaultSettingsImpl(
       listView: null == listView
@@ -109,6 +116,10 @@ class __$$VaultSettingsImplCopyWithImpl<$Res>
           ? _value.columnCount
           : columnCount // ignore: cast_nullable_to_non_nullable
               as int,
+      verticalScroll: null == verticalScroll
+          ? _value.verticalScroll
+          : verticalScroll // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -116,7 +127,10 @@ class __$$VaultSettingsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VaultSettingsImpl implements _VaultSettings {
-  _$VaultSettingsImpl({required this.listView, required this.columnCount});
+  _$VaultSettingsImpl(
+      {required this.listView,
+      required this.columnCount,
+      required this.verticalScroll});
 
   factory _$VaultSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$VaultSettingsImplFromJson(json);
@@ -125,10 +139,12 @@ class _$VaultSettingsImpl implements _VaultSettings {
   final bool listView;
   @override
   final int columnCount;
+  @override
+  final bool verticalScroll;
 
   @override
   String toString() {
-    return 'VaultSettings(listView: $listView, columnCount: $columnCount)';
+    return 'VaultSettings(listView: $listView, columnCount: $columnCount, verticalScroll: $verticalScroll)';
   }
 
   @override
@@ -139,12 +155,15 @@ class _$VaultSettingsImpl implements _VaultSettings {
             (identical(other.listView, listView) ||
                 other.listView == listView) &&
             (identical(other.columnCount, columnCount) ||
-                other.columnCount == columnCount));
+                other.columnCount == columnCount) &&
+            (identical(other.verticalScroll, verticalScroll) ||
+                other.verticalScroll == verticalScroll));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, listView, columnCount);
+  int get hashCode =>
+      Object.hash(runtimeType, listView, columnCount, verticalScroll);
 
   /// Create a copy of VaultSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -165,7 +184,8 @@ class _$VaultSettingsImpl implements _VaultSettings {
 abstract class _VaultSettings implements VaultSettings {
   factory _VaultSettings(
       {required final bool listView,
-      required final int columnCount}) = _$VaultSettingsImpl;
+      required final int columnCount,
+      required final bool verticalScroll}) = _$VaultSettingsImpl;
 
   factory _VaultSettings.fromJson(Map<String, dynamic> json) =
       _$VaultSettingsImpl.fromJson;
@@ -174,6 +194,8 @@ abstract class _VaultSettings implements VaultSettings {
   bool get listView;
   @override
   int get columnCount;
+  @override
+  bool get verticalScroll;
 
   /// Create a copy of VaultSettings
   /// with the given fields replaced by the non-null parameter values.

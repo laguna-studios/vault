@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
+import "package:vault/data/model/vault_item.dart";
 import "package:vault/ui/core/screen/file_viewer_screen.dart";
 import "package:vault/ui/core/screen/vault_settings_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
@@ -33,7 +34,7 @@ class VaultScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                     onPressed: viewModel.toggleViewMode,
-                    icon: Icon(viewModel.isListViewMode ? Icons.grid_3x3 : Icons.list),
+                    icon: Icon(viewModel.isListViewMode ? Icons.grid_view : Icons.list),
                   ),
                   IconButton(
                     onPressed: () => context.go(
@@ -142,9 +143,9 @@ class VaultScreen extends StatelessWidget {
       return;
     }
 
-    final FileSystemEntity item = viewModel.items.elementAt(index);
-    if (item is Directory) {
-      viewModel.enterDirectory(item);
+    final VaultItem item = viewModel.items.elementAt(index);
+    if (item.item is Directory) {
+      viewModel.enterDirectory(item.item as Directory);
       return;
     }
 
@@ -158,8 +159,8 @@ class VaultScreen extends StatelessWidget {
 }
 
 class _GridViewVault extends StatelessWidget {
-  final Iterable<FileSystemEntity> items;
-  final Set<FileSystemEntity> selectedItems;
+  final Iterable<VaultItem> items;
+  final Set<VaultItem> selectedItems;
   final Function(int index) onTap;
   final Function(int index) onLongPress;
 
@@ -179,7 +180,7 @@ class _GridViewVault extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8),
       itemBuilder: (context, index) {
-        final FileSystemEntity item = items.elementAt(index);
+        final VaultItem item = items.elementAt(index);
 
         return GestureDetector(
           onTap: () => onTap(index),
@@ -188,14 +189,14 @@ class _GridViewVault extends StatelessWidget {
             decoration: BoxDecoration(
               border: selectedItems.contains(item) ? Border.all(color: Colors.blue, width: 8) : null,
             ),
-            child: switch (item) {
+            child: switch (item.item) {
               File() => Image.file(
-                  item,
+                  item.thumbnail as File,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.name),
+                  errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.item.name),
                 ),
-              Directory() => _GridItem(icon: Icons.folder, name: item.name),
-              _ => _GridItem(icon: Icons.question_mark, name: item.name),
+              Directory() => _GridItem(icon: Icons.folder, name: item.item.name),
+              _ => _GridItem(icon: Icons.question_mark, name: item.item.name),
             },
           ),
         );
@@ -222,8 +223,8 @@ class _GridItem extends StatelessWidget {
 }
 
 class _ListViewVault extends StatelessWidget {
-  final Iterable<FileSystemEntity> items;
-  final Set<FileSystemEntity> selectedItems;
+  final Iterable<VaultItem> items;
+  final Set<VaultItem> selectedItems;
   final Function(int index) onTap;
   final Function(int index) onLongPress;
 
@@ -240,11 +241,11 @@ class _ListViewVault extends StatelessWidget {
       separatorBuilder: (_, __) => Divider(),
       itemCount: items.length,
       itemBuilder: (context, index) {
-        final FileSystemEntity item = items.elementAt(index);
+        final VaultItem item = items.elementAt(index);
 
         return ListTile(
           leading: Icon(item is Directory ? Icons.folder : Icons.file_open),
-          title: Text(item.name),
+          title: Text(item.item.name),
           onTap: () => onTap(index),
           selected: selectedItems.contains(item),
           onLongPress: () => onLongPress(index),

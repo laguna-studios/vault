@@ -8,6 +8,7 @@ class VaultSettings with _$VaultSettings {
   factory VaultSettings({
     required bool listView,
     required int columnCount,
+    required bool verticalScroll,
   }) = _VaultSettings;
 
   factory VaultSettings.fromJson(Map<String, dynamic> json) => _$VaultSettingsFromJson(json);
