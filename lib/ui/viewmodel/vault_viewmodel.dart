@@ -146,4 +146,11 @@ class VaultViewModel extends ChangeNotifier {
     _vaultRepository.createDirectory(join(location, name));
     loadVaultContent();
   }
+
+  Future<bool> downloadFile(String url) async {
+    final success = await _vaultRepository.downloadFile(location, url);
+
+    if (success) loadVaultContent();
+    return success;
+  }
 }

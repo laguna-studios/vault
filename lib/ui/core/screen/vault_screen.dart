@@ -100,6 +100,13 @@ class VaultScreen extends StatelessWidget {
                   Gap(8),
                   FloatingActionButton.extended(
                     heroTag: 1,
+                    onPressed: () => _openDownloadDialog(context),
+                    label: Text("Download"),
+                    icon: Icon(Icons.add),
+                  ),
+                  Gap(8),
+                  FloatingActionButton.extended(
+                    heroTag: 2,
                     onPressed: () => _openCreateFolderDialog(context),
                     label: Text("Create Folder"),
                     icon: Icon(Icons.folder),
@@ -107,6 +114,14 @@ class VaultScreen extends StatelessWidget {
                 ],
               ),
       ),
+    );
+  }
+
+  void _openDownloadDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) =>
+          ChangeNotifierProvider<VaultViewModel>.value(value: context.read(), child: DownloadDialog()),
     );
   }
 
@@ -155,6 +170,47 @@ class VaultScreen extends StatelessWidget {
   void _onLongPress(BuildContext context, int index) {
     final VaultViewModel viewModel = context.read();
     viewModel.toggleItem(index);
+  }
+}
+
+class DownloadDialog extends StatefulWidget {
+  const DownloadDialog({
+    super.key,
+  });
+
+  @override
+  State<DownloadDialog> createState() => _DownloadDialogState();
+}
+
+class _DownloadDialogState extends State<DownloadDialog> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Download File"),
+      content: TextField(
+        controller: _controller,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () async {
+            final success = await context.read<VaultViewModel>().downloadFile(_controller.text);
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(success ? "Download has been successful" : "Download failed")));
+            Navigator.of(context).pop();
+          },
+          child: Text("Download"),
+        ),
+      ],
+    );
   }
 }
 

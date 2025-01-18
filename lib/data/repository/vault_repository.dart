@@ -1,12 +1,15 @@
 import "dart:convert";
 import "dart:io";
 import "dart:typed_data";
+import "package:http/http.dart" as http;
 
 import "package:crypto/crypto.dart";
 import "package:dartx/dartx_io.dart";
 import "package:flutter/foundation.dart";
 import "package:image/image.dart";
+import "package:mime/mime.dart";
 import "package:path/path.dart";
+import "package:uuid/v4.dart";
 import "package:vault/data/model/vault_item.dart";
 import "package:vault/data/model/vault_settings.dart";
 import "package:vault/data/service/vault_datasource.dart";
@@ -89,5 +92,20 @@ class VaultRepository {
     }
 
     return null;
+  }
+
+  Future<bool> downloadFile(String path, String url) async {
+    try {
+      http.Response resp = await http.get(Uri.parse(url));
+      if (resp.statusCode != 200) return false;
+
+      final String ext = extensionFromMime(resp.headers["content-type"] ?? "") ?? "mp4";
+      final String fileName = "${UuidV4().generate()}.$ext";
+
+      await _vaultDatasource.writeFileAsBytes(join(_vault, path, fileName), resp.bodyBytes);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
