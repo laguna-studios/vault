@@ -30,7 +30,7 @@ class VaultScreen extends StatelessWidget {
             : AppBar(
                 title: Text("My Vault"),
                 centerTitle: true,
-                bottom: PreferredSize(preferredSize: Size.zero, child: Text(viewModel.location)),
+                bottom: PreferredSize(preferredSize: Size.zero, child: Text("/${viewModel.location}")),
                 actions: [
                   IconButton(
                     onPressed: viewModel.toggleViewMode,
@@ -120,8 +120,7 @@ class VaultScreen extends StatelessWidget {
   void _openDownloadDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) =>
-          ChangeNotifierProvider<VaultViewModel>.value(value: context.read(), child: DownloadDialog()),
+      builder: (_) => ChangeNotifierProvider<VaultViewModel>.value(value: context.read(), child: DownloadDialog()),
     );
   }
 
@@ -183,14 +182,33 @@ class DownloadDialog extends StatefulWidget {
 }
 
 class _DownloadDialogState extends State<DownloadDialog> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _fileNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    _fileNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Download File"),
-      content: TextField(
-        controller: _controller,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _urlController,
+            decoration: InputDecoration(border: OutlineInputBorder(), hintText: "URL"),
+          ),
+          Gap(8),
+          TextField(
+            controller: _fileNameController,
+            decoration: InputDecoration(border: OutlineInputBorder(), hintText: "(Optional) File Name"),
+          ),
+        ],
       ),
       actions: [
         TextButton(
@@ -200,17 +218,29 @@ class _DownloadDialogState extends State<DownloadDialog> {
           child: Text("Cancel"),
         ),
         TextButton(
-          onPressed: () async {
-            final success = await context.read<VaultViewModel>().downloadFile(_controller.text);
-            if (!context.mounted) return;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(success ? "Download has been successful" : "Download failed")));
-            Navigator.of(context).pop();
-          },
+          onPressed: _tryDownloadAndPop,
           child: Text("Download"),
         ),
       ],
     );
+  }
+
+  Future<void> _tryDownloadAndPop() async {
+    try {
+      await _download();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download failed: $e")));
+    } finally {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _download() async {
+    await context.read<VaultViewModel>().downloadFile(
+          _urlController.text,
+          filename: _fileNameController.text.isEmpty ? null : _fileNameController.text,
+        );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download has been successful")));
   }
 }
 
@@ -246,11 +276,13 @@ class _GridViewVault extends StatelessWidget {
               border: selectedItems.contains(item) ? Border.all(color: Colors.blue, width: 8) : null,
             ),
             child: switch (item.item) {
-              File() => Image.file(
-                  item.thumbnail as File,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.item.name),
-                ),
+              File() => item.thumbnail == null
+                  ? Icon(Icons.broken_image)
+                  : Image.file(
+                      item.thumbnail as File,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => _GridItem(icon: Icons.file_copy, name: item.item.name),
+                    ),
               Directory() => _GridItem(icon: Icons.folder, name: item.item.name),
               _ => _GridItem(icon: Icons.question_mark, name: item.item.name),
             },

@@ -94,18 +94,16 @@ class VaultRepository {
     return null;
   }
 
-  Future<bool> downloadFile(String path, String url) async {
-    try {
-      http.Response resp = await http.get(Uri.parse(url));
-      if (resp.statusCode != 200) return false;
+  Future<bool> downloadFile(String path, String url, {String? filename}) async {
+    http.Response resp = await http.get(Uri.parse(url));
+    if (resp.statusCode != 200) throw FormatException("Invalid Status Code: ${resp.statusCode}");
 
+    if (filename == null) {
       final String ext = extensionFromMime(resp.headers["content-type"] ?? "") ?? "mp4";
-      final String fileName = "${UuidV4().generate()}.$ext";
-
-      await _vaultDatasource.writeFileAsBytes(join(_vault, path, fileName), resp.bodyBytes);
-      return true;
-    } catch (_) {
-      return false;
+      filename = "${UuidV4().generate()}.$ext";
     }
+
+    await _vaultDatasource.writeFileAsBytes(join(_vault, path, filename), resp.bodyBytes);
+    return true;
   }
 }
