@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     name: CICD
     steps:
-      - uses: laguna-studios/fhs@1.0.7
+      - uses: laguna-studios/fhs@1.0.8
         with:
           qa: false
           create_release: true
           publish: false
-          
+          flutter_version: 3.27.1
