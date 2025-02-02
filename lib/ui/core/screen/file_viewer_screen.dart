@@ -2,7 +2,6 @@ import "dart:io";
 
 import "package:chewie/chewie.dart";
 import "package:flutter/material.dart";
-import "package:flutter/rendering.dart";
 import "package:provider/provider.dart";
 import "package:vault/data/model/vault_item.dart";
 import "package:vault/file_system_entity_extension.dart";

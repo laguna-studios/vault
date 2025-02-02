@@ -7,7 +7,7 @@ import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/data/repository/vault_repository.dart";
 import "package:vault/data/service/vault_datasource.dart";
-import "package:vault/ui/core/screen/create_vault_screen.dart";
+import "package:vault/ui/core/promo_drawer.dart";
 import "package:vault/ui/core/screen/vault_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
 
@@ -26,29 +26,31 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF2196F3),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text("Like"),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
       ),
+      drawer: PromoDrawer(),
       body: Center(
         child: Column(
           children: [
-            Gap(120),
-            Icon(Icons.fingerprint, size: 224),
-            Gap(100),
+            Gap(64),
+            Image.asset(
+              "assets/logo.png",
+              height: 256,
+            ),
+            Gap(64),
             SizedBox(
               width: 320,
               child: TextField(
                 controller: _controller,
                 obscureText: true,
                 onSubmitted: (_) => _openVault(),
-                decoration: InputDecoration(hintText: "Enter Your Vault's Name", border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: "Enter Your Vault's Name",
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
             Gap(16),
@@ -85,9 +87,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     _controller.clear();
-  }
-
-  void _createNewVault() {
-    context.go(CreateVaultScreen());
   }
 }
