@@ -264,7 +264,7 @@ class _GridViewVault extends StatelessWidget {
     return GridView.builder(
       itemCount: items.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8),
+          crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8,),
       itemBuilder: (context, index) {
         final VaultItem item = items.elementAt(index);
 

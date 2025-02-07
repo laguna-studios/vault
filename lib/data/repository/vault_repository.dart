@@ -1,10 +1,8 @@
 import "dart:convert";
 import "dart:io";
-import "dart:typed_data";
 import "package:http/http.dart" as http;
 
 import "package:crypto/crypto.dart";
-import "package:dartx/dartx_io.dart";
 import "package:flutter/foundation.dart";
 import "package:image/image.dart";
 import "package:mime/mime.dart";
@@ -85,7 +83,7 @@ class VaultRepository {
       return thumbnail;
     } else if (item.isVideo) {
       final Uint8List? thumbnailData = await vt.VideoThumbnail.thumbnailData(
-          video: item.path, maxHeight: 512, maxWidth: 512, imageFormat: vt.ImageFormat.JPEG);
+          video: item.path, maxHeight: 512, maxWidth: 512, imageFormat: vt.ImageFormat.JPEG,);
       if (thumbnailData == null) return null;
       thumbnail.writeAsBytesSync(thumbnailData);
       return thumbnail;

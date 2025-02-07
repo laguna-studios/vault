@@ -35,21 +35,29 @@ class PromoDrawer extends StatelessWidget {
           ListTile(
             title: Text("Contact"),
             leading: const Icon(Icons.person),
-            onTap: () => WebbrowserScreen.open(context,
-                title: "", url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html"),
+            onTap: () => WebbrowserScreen.open(
+              context,
+              title: "",
+              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
+            ),
           ),
           ListTile(
             title: Text("Terms Of Use"),
             leading: const Icon(Icons.casino),
-            onTap: () => WebbrowserScreen.open(context,
-                title: "", url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html"),
+            onTap: () => WebbrowserScreen.open(
+              context,
+              title: "",
+              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
+            ),
           ),
           ListTile(
             title: Text("Privacy Policy"),
             leading: const Icon(Icons.lock),
-            onTap: () => WebbrowserScreen.open(context,
-                title: "Privacy Policy",
-                url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html"),
+            onTap: () => WebbrowserScreen.open(
+              context,
+              title: "Privacy Policy",
+              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
+            ),
           ),
           ListTile(
             title: Text("About"),

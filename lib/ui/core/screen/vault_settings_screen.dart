@@ -43,7 +43,7 @@ class VaultSettingsScreen extends StatelessWidget {
             onTap: () => showDialog(
               context: context,
               builder: (_) => ChangeNotifierProvider<VaultViewModel>.value(
-                  value: vaultViewModel, child: ColumnDialog(initialValue: vaultViewModel.columnCount)),
+                  value: vaultViewModel, child: ColumnDialog(initialValue: vaultViewModel.columnCount),),
             ),
           ),
           Padding(
@@ -79,7 +79,7 @@ class VaultSettingsScreen extends StatelessWidget {
             leading: Icon(Icons.delete_forever),
             title: Text("Delete Vault"),
             subtitle: Text("Removes all files from this vault"),
-          )
+          ),
         ],
       ),
     );
