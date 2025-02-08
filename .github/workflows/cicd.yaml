@@ -2,6 +2,7 @@ name: CICD
 run-name: Create Release On Push
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   cicd:
