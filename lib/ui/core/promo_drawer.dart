@@ -37,7 +37,7 @@ class PromoDrawer extends StatelessWidget {
             leading: const Icon(Icons.person),
             onTap: () => WebbrowserScreen.open(
               context,
-              title: "",
+              title: "Contact",
               url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
             ),
           ),
@@ -46,7 +46,7 @@ class PromoDrawer extends StatelessWidget {
             leading: const Icon(Icons.casino),
             onTap: () => WebbrowserScreen.open(
               context,
-              title: "",
+              title: "Terms Of Use",
               url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
             ),
           ),
