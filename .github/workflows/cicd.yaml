@@ -17,4 +17,4 @@ jobs:
           qa: false
           create_release: true
           publish: false
-          flutter_version: "3.24.5"
+          flutter_version: "3.27.0"
