@@ -1,5 +1,3 @@
-project.gradle.startParameter.excludedTaskNames.add(":flutter_inappwebview:minifyReleaseWithR8")
-
 allprojects {
     repositories {
         google()
