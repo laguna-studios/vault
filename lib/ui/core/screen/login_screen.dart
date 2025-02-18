@@ -24,45 +24,72 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2196F3),
+      backgroundColor: const Color.fromARGB(255, 8, 26, 40),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
       drawer: PromoDrawer(),
-      body: Center(
-        child: Column(
-          children: [
-            Gap(64),
-            Image.asset(
-              "assets/logo.png",
-              height: 256,
-            ),
-            Gap(64),
-            SizedBox(
-              width: 320,
-              child: TextField(
-                controller: _controller,
-                obscureText: true,
-                onSubmitted: (_) => _openVault(),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Enter Your Vault's Name",
-                  border: OutlineInputBorder(),
+      body: Builder(
+        builder: (context) {
+          return Center(
+            child: Column(
+              children: [
+                Gap(32),
+                Image.asset(
+                  "assets/logo.png",
+                  height: 200,
                 ),
-              ),
+                Gap(64),
+                SizedBox(
+                  width: 320,
+                  child: TextField(
+                    controller: _controller,
+                    obscureText: true,
+                    onSubmitted: (_) => _openVault(),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      filled: true,
+                      hintText: "Enter Vault Secret",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                Gap(16),
+                SizedBox(
+                  width: 320,
+                  child: OutlinedButton(
+                    onPressed: _openVault,
+                    child: Text("Open Vault"),
+                    style: ButtonStyle(
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+                        side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
+                  ),
+                ),
+                Gap(8),
+                SizedBox(
+                  width: 320,
+                  child: TextButton(
+                    onPressed: () {
+                      showBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return BottomSheet(
+                            onClosing: () {},
+                            builder: (context) {
+                              return Container(height: 500, color: Colors.white, child: Text("Help"));
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Text("How To?"),
+                  ),
+                ),
+              ],
             ),
-            Gap(16),
-            SizedBox(
-              width: 320,
-              child: OutlinedButton(
-                onPressed: _openVault,
-                child: Text("Open Vault"),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
