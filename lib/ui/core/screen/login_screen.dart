@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Animate(
                       effects: [
                         FadeEffect(duration: logoDuration),
-                        SlideEffect(duration: logoDuration, curve: Curves.easeInOut)
+                        SlideEffect(duration: logoDuration, curve: Curves.easeInOut),
                       ],
                       child: Image.asset(
                         "assets/logo.png",
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         delay: logoDuration * 2,
                         effects: [
                           FadeEffect(),
-                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut),
                         ],
                         child: SizedBox(
                           width: 320,
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         delay: logoDuration * 2 + inputDuration * 0.5,
                         effects: [
                           FadeEffect(),
-                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut),
                         ],
                         child: SizedBox(
                           width: 320,
@@ -93,9 +93,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _openVault,
                             child: Text("Open Vault"),
                             style: ButtonStyle(
-                                shape: WidgetStatePropertyAll(
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                                side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                              ),
+                              side: WidgetStatePropertyAll(BorderSide(color: Colors.white)),
+                            ),
                           ),
                         ),
                       ),
@@ -104,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         delay: logoDuration * 2 + inputDuration,
                         effects: [
                           FadeEffect(),
-                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut),
                         ],
                         child: SizedBox(
                           width: 320,
@@ -154,12 +156,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                             Align(
                                               alignment: Alignment.centerRight,
                                               child: TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Got It")),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Got It"),
+                                              ),
                                             ),
-                                            Gap(MediaQuery.of(context).padding.bottom)
+                                            Gap(MediaQuery.of(context).padding.bottom),
                                           ],
                                         ),
                                       );
