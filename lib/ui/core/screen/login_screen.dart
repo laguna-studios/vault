@@ -1,6 +1,7 @@
 import "dart:io";
 
 import "package:flutter/material.dart";
+import "package:flutter_animate/flutter_animate.dart";
 import "package:gap/gap.dart";
 import "package:path_provider/path_provider.dart";
 import "package:provider/provider.dart";
@@ -21,6 +22,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _controller = TextEditingController();
 
+  final Duration logoDuration = Duration(milliseconds: 600);
+  final Duration inputDuration = Duration(milliseconds: 500);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +40,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   child: Center(
-                    child: Image.asset(
-                      "assets/logo.png",
-                      height: 200,
+                    child: Animate(
+                      effects: [
+                        FadeEffect(duration: logoDuration),
+                        SlideEffect(duration: logoDuration, curve: Curves.easeInOut)
+                      ],
+                      child: Image.asset(
+                        "assets/logo.png",
+                        height: 200,
+                      ),
                     ),
                   ),
                 ),
@@ -46,50 +56,71 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        width: 320,
-                        child: TextField(
-                          controller: _controller,
-                          obscureText: true,
-                          onSubmitted: (_) => _openVault(),
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            filled: true,
-                            hintText: "Enter Vault Secret",
-                            border: OutlineInputBorder(),
+                      Animate(
+                        delay: logoDuration * 2,
+                        effects: [
+                          FadeEffect(),
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                        ],
+                        child: SizedBox(
+                          width: 320,
+                          child: TextField(
+                            controller: _controller,
+                            obscureText: true,
+                            onSubmitted: (_) => _openVault(),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              filled: true,
+                              hintText: "Enter Vault Secret",
+                              border: OutlineInputBorder(),
+                            ),
                           ),
                         ),
                       ),
                       Gap(4),
-                      SizedBox(
-                        width: 320,
-                        child: OutlinedButton(
-                          onPressed: _openVault,
-                          child: Text("Open Vault"),
-                          style: ButtonStyle(
-                              shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                              side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
+                      Animate(
+                        delay: logoDuration * 2 + inputDuration * 0.5,
+                        effects: [
+                          FadeEffect(),
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                        ],
+                        child: SizedBox(
+                          width: 320,
+                          child: OutlinedButton(
+                            onPressed: _openVault,
+                            child: Text("Open Vault"),
+                            style: ButtonStyle(
+                                shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+                                side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
+                          ),
                         ),
                       ),
                       Gap(4),
-                      SizedBox(
-                        width: 320,
-                        child: TextButton(
-                          onPressed: () {
-                            showBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return BottomSheet(
-                                  onClosing: () {},
-                                  builder: (context) {
-                                    return Container(height: 500, color: Colors.white, child: Text("Help"));
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          child: Text("How To?"),
+                      Animate(
+                        delay: logoDuration * 2 + inputDuration,
+                        effects: [
+                          FadeEffect(),
+                          SlideEffect(duration: inputDuration, begin: Offset(0, 1), curve: Curves.easeInOut)
+                        ],
+                        child: SizedBox(
+                          width: 320,
+                          child: TextButton(
+                            onPressed: () {
+                              showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return BottomSheet(
+                                    onClosing: () {},
+                                    builder: (context) {
+                                      return Container(height: 500, color: Colors.white, child: Text("Help"));
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Text("How To?"),
+                          ),
                         ),
                       ),
                     ],
