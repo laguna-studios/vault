@@ -20,6 +20,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   final TextEditingController _controller = TextEditingController();
 
   final Duration logoDuration = Duration(milliseconds: 600);
@@ -28,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 8, 26, 40),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -107,13 +110,59 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 320,
                           child: TextButton(
                             onPressed: () {
-                              showBottomSheet(
+                              showModalBottomSheet(
                                 context: context,
                                 builder: (context) {
                                   return BottomSheet(
+                                    showDragHandle: true,
+                                    enableDrag: true,
                                     onClosing: () {},
                                     builder: (context) {
-                                      return Container(height: 500, color: Colors.white, child: Text("Help"));
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Align(
+                                              child: Text(
+                                                "How To Create A Vault",
+                                                style: Theme.of(context).textTheme.headlineMedium,
+                                              ),
+                                            ),
+                                            Gap(16),
+                                            Text(
+                                              "1. Find a secret that only you know.",
+                                              style: Theme.of(context).textTheme.bodyLarge,
+                                            ),
+                                            Gap(4),
+                                            Text(
+                                              "2. Enter it as your vault secret.",
+                                              style: Theme.of(context).textTheme.bodyLarge,
+                                            ),
+                                            Gap(4),
+                                            Text(
+                                              "3. Click 'Open Vault'.",
+                                              style: Theme.of(context).textTheme.bodyLarge,
+                                            ),
+                                            Gap(4),
+                                            Text(
+                                              "4. Congrats! You' re done. You created a vault.",
+                                              style: Theme.of(context).textTheme.bodyLarge,
+                                            ),
+                                            Gap(8),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("Got It")),
+                                            ),
+                                            Gap(MediaQuery.of(context).padding.bottom)
+                                          ],
+                                        ),
+                                      );
                                     },
                                   );
                                 },
