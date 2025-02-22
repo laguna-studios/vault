@@ -6,6 +6,7 @@ import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/data/model/vault_item.dart";
+import "package:vault/file_system_entity_extension.dart";
 import "package:vault/ui/core/screen/file_viewer_screen.dart";
 import "package:vault/ui/core/screen/vault_settings_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
@@ -167,7 +168,7 @@ class VaultScreen extends StatelessWidget {
     for (int i = 0; i < index; i++) {
       if (viewModel.items.elementAt(i).item is Directory) realIndex--;
     }
-    
+
     context.go(ChangeNotifierProvider.value(value: viewModel, child: FileViewerScreen(index: realIndex)));
   }
 
@@ -269,7 +270,10 @@ class _GridViewVault extends StatelessWidget {
     return GridView.builder(
       itemCount: items.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columnCount, crossAxisSpacing: 8, mainAxisSpacing: 8,),
+        crossAxisCount: columnCount,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
       itemBuilder: (context, index) {
         final VaultItem item = items.elementAt(index);
 
@@ -337,7 +341,17 @@ class _ListViewVault extends StatelessWidget {
         final VaultItem item = items.elementAt(index);
 
         return ListTile(
-          leading: Icon(item is Directory ? Icons.folder : Icons.file_open),
+          leading: SizedBox(
+            height: 42,
+            width: 42,
+            child: switch (item.item) {
+              File() => item.thumbnail == null
+                  ? Icon(Icons.broken_image)
+                  : Image.file(item.thumbnail as File, fit: BoxFit.cover),
+              Directory() => Icon(Icons.folder),
+              _ => Icon(Icons.question_mark)
+            },
+          ),
           title: Text(item.item.name),
           onTap: () => onTap(index),
           selected: selectedItems.contains(item),
