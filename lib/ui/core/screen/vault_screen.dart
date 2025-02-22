@@ -163,7 +163,12 @@ class VaultScreen extends StatelessWidget {
       return;
     }
 
-    context.go(ChangeNotifierProvider.value(value: viewModel, child: FileViewerScreen(index: index)));
+    int realIndex = index;
+    for (int i = 0; i < index; i++) {
+      if (viewModel.items.elementAt(i).item is Directory) realIndex--;
+    }
+    
+    context.go(ChangeNotifierProvider.value(value: viewModel, child: FileViewerScreen(index: realIndex)));
   }
 
   void _onLongPress(BuildContext context, int index) {
