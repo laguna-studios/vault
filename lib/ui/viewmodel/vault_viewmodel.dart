@@ -151,4 +151,13 @@ class VaultViewModel extends ChangeNotifier {
     await _vaultRepository.downloadFile(location, url, filename: filename);
     loadVaultContent();
   }
+
+  bool deleteVault() {
+    try {
+      _vaultRepository.deleteVault();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 }

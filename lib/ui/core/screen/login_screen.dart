@@ -25,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 8, 26, 40),
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
@@ -35,55 +34,65 @@ class _LoginScreenState extends State<LoginScreen> {
           return Center(
             child: Column(
               children: [
-                Gap(32),
-                Image.asset(
-                  "assets/logo.png",
-                  height: 200,
-                ),
-                Gap(64),
-                SizedBox(
-                  width: 320,
-                  child: TextField(
-                    controller: _controller,
-                    obscureText: true,
-                    onSubmitted: (_) => _openVault(),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      filled: true,
-                      hintText: "Enter Vault Secret",
-                      border: OutlineInputBorder(),
+                Expanded(
+                  child: Center(
+                    child: Image.asset(
+                      "assets/logo.png",
+                      height: 200,
                     ),
                   ),
                 ),
-                Gap(16),
-                SizedBox(
-                  width: 320,
-                  child: OutlinedButton(
-                    onPressed: _openVault,
-                    child: Text("Open Vault"),
-                    style: ButtonStyle(
-                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                        side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
-                  ),
-                ),
-                Gap(8),
-                SizedBox(
-                  width: 320,
-                  child: TextButton(
-                    onPressed: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return BottomSheet(
-                            onClosing: () {},
-                            builder: (context) {
-                              return Container(height: 500, color: Colors.white, child: Text("Help"));
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: Text("How To?"),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 320,
+                        child: TextField(
+                          controller: _controller,
+                          obscureText: true,
+                          onSubmitted: (_) => _openVault(),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            filled: true,
+                            hintText: "Enter Vault Secret",
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      Gap(4),
+                      SizedBox(
+                        width: 320,
+                        child: OutlinedButton(
+                          onPressed: _openVault,
+                          child: Text("Open Vault"),
+                          style: ButtonStyle(
+                              shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+                              side: WidgetStatePropertyAll(BorderSide(color: Colors.white))),
+                        ),
+                      ),
+                      Gap(4),
+                      SizedBox(
+                        width: 320,
+                        child: TextButton(
+                          onPressed: () {
+                            showBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return BottomSheet(
+                                  onClosing: () {},
+                                  builder: (context) {
+                                    return Container(height: 500, color: Colors.white, child: Text("Help"));
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          child: Text("How To?"),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

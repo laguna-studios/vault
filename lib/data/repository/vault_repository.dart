@@ -83,7 +83,11 @@ class VaultRepository {
       return thumbnail;
     } else if (item.isVideo) {
       final Uint8List? thumbnailData = await vt.VideoThumbnail.thumbnailData(
-          video: item.path, maxHeight: 512, maxWidth: 512, imageFormat: vt.ImageFormat.JPEG,);
+        video: item.path,
+        maxHeight: 512,
+        maxWidth: 512,
+        imageFormat: vt.ImageFormat.JPEG,
+      );
       if (thumbnailData == null) return null;
       thumbnail.writeAsBytesSync(thumbnailData);
       return thumbnail;
@@ -104,4 +108,6 @@ class VaultRepository {
     await _vaultDatasource.writeFileAsBytes(join(_vault, path, filename), resp.bodyBytes);
     return true;
   }
+
+  Future<void> deleteVault() => _vaultDatasource.deleteFile(_vault);
 }

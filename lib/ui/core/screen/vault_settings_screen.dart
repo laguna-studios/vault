@@ -43,7 +43,9 @@ class VaultSettingsScreen extends StatelessWidget {
             onTap: () => showDialog(
               context: context,
               builder: (_) => ChangeNotifierProvider<VaultViewModel>.value(
-                  value: vaultViewModel, child: ColumnDialog(initialValue: vaultViewModel.columnCount),),
+                value: vaultViewModel,
+                child: ColumnDialog(initialValue: vaultViewModel.columnCount),
+              ),
             ),
           ),
           Padding(
@@ -79,6 +81,37 @@ class VaultSettingsScreen extends StatelessWidget {
             leading: Icon(Icons.delete_forever),
             title: Text("Delete Vault"),
             subtitle: Text("Removes all files from this vault"),
+            onTap: () => showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return AlertDialog(
+                    title: Text("Are you sure?"),
+                    content: Text("All files will be deleted. You can't recover them."),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text("Cancel")),
+                      TextButton(
+                        onPressed: () {
+                          bool success = context.read<VaultViewModel>().deleteVault();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(success ? "The vault has been deleted!" : "An error occured")));
+
+                          if (success) {
+                            Navigator.of(context)
+                              ..pop()
+                              ..pop()
+                              ..pop();
+                          }
+                        },
+                        child: Text("Yes, delete all files!"),
+                        style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(Colors.redAccent)),
+                      ),
+                    ],
+                  );
+                }),
           ),
         ],
       ),
