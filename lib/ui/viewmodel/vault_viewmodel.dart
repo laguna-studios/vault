@@ -165,6 +165,6 @@ class VaultViewModel extends ChangeNotifier {
     String? path = await FilePicker.platform.getDirectoryPath();
     if (path == null) return;
 
-    File(join(path, "test.txt")).writeAsString("Hallo");
+    File(join(path, "test.txt")).writeAsStringSync("Hallo");
     }
 }
