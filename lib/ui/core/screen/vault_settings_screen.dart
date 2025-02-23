@@ -63,9 +63,7 @@ class VaultSettingsScreen extends StatelessWidget {
             leading: Icon(Icons.send),
             title: Text("Export Vault"),
             subtitle: Text("Copy all files to public device storage"),
-            onTap: () {
-              vaultViewModel.exportVault();
-            },
+            onTap: null,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
