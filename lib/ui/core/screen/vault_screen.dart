@@ -2,6 +2,7 @@ import "dart:io";
 
 import "package:dartx/dartx_io.dart";
 import "package:flutter/material.dart";
+import "package:flutter_expandable_fab/flutter_expandable_fab.dart";
 import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
@@ -59,8 +60,24 @@ class VaultScreen extends StatelessWidget {
                   ),
                 if (viewModel.items.isEmpty)
                   Expanded(
-                    child: Center(
-                      child: Text("No Items Yet"),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.search,
+                              size: 128,
+                              color: Colors.white24,
+                            ),
+                            Text(
+                              "No Items Yet",
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white54),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 if (viewModel.items.isNotEmpty)
@@ -83,34 +100,50 @@ class VaultScreen extends StatelessWidget {
             );
           },
         ),
+        floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: viewModel.isSelectionActive
             ? FloatingActionButton.extended(
                 onPressed: viewModel.deleteSelection,
                 label: Text("Delete"),
                 icon: Icon(Icons.delete),
               )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
+            : ExpandableFab(
+                type: ExpandableFabType.up,
+                childrenAnimation: ExpandableFabAnimation.none,
+                distance: 70,
                 children: [
-                  FloatingActionButton.extended(
-                    heroTag: 0,
-                    onPressed: viewModel.addFiles,
-                    label: Text("Add File"),
-                    icon: Icon(Icons.add),
+                  Row(
+                    children: [
+                      Text("Add File"),
+                      Gap(8),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: viewModel.addFiles,
+                        child: Icon(Icons.add),
+                      ),
+                    ],
                   ),
-                  Gap(8),
-                  FloatingActionButton.extended(
-                    heroTag: 1,
-                    onPressed: () => _openDownloadDialog(context),
-                    label: Text("Download"),
-                    icon: Icon(Icons.add),
+                  Row(
+                    children: [
+                      Text("Download File"),
+                      Gap(8),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () => _openDownloadDialog(context),
+                        child: Icon(Icons.download),
+                      ),
+                    ],
                   ),
-                  Gap(8),
-                  FloatingActionButton.extended(
-                    heroTag: 2,
-                    onPressed: () => _openCreateFolderDialog(context),
-                    label: Text("Create Folder"),
-                    icon: Icon(Icons.folder),
+                  Row(
+                    children: [
+                      Text("New Folder"),
+                      Gap(8),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: () => _openCreateFolderDialog(context),
+                        child: Icon(Icons.create_new_folder),
+                      ),
+                    ],
                   ),
                 ],
               ),
