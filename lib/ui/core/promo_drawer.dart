@@ -38,7 +38,7 @@ class PromoDrawer extends StatelessWidget {
             onTap: () => WebbrowserScreen.open(
               context,
               title: "Contact",
-              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
+              url: "https://lagunastudios.de/impressum",
             ),
           ),
           ListTile(
@@ -47,7 +47,7 @@ class PromoDrawer extends StatelessWidget {
             onTap: () => WebbrowserScreen.open(
               context,
               title: "Terms Of Use",
-              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/privacy.html",
+              url: "https://lagunastudios.de/github/vault/refs/heads/main/html/terms.html",
             ),
           ),
           ListTile(
