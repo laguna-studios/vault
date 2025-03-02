@@ -160,11 +160,4 @@ class VaultViewModel extends ChangeNotifier {
       return false;
     }
   }
-
-  Future<void> exportVault() async {
-    String? path = await FilePicker.platform.getDirectoryPath();
-    if (path == null) return;
-
-    File(join(path, "test.txt")).writeAsStringSync("Hallo");
-    }
 }
