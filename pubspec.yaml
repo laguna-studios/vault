@@ -1,12 +1,14 @@
 name: vault
 description: "app to store files encrypted"
 publish_to: 'none'
-version: 1.0.0+28
+version: 0.0.1+1
 
 environment:
   sdk: ^3.6.0
 
 dependencies:
+  archive: ^4.0.4
+  open_file: ^3.5.10
   chewie: ^1.9.0
   crypto: ^3.0.6
   dartx: ^1.2.0
