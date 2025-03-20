@@ -93,13 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 320,
                           child: OutlinedButton(
                             onPressed: _openVault,
-                            child: Text("Open Vault"),
                             style: ButtonStyle(
                               shape: WidgetStatePropertyAll(
                                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                               ),
                               side: WidgetStatePropertyAll(BorderSide(color: Colors.white)),
                             ),
+                            child: Text("Open Vault"),
                           ),
                         ),
                       ),

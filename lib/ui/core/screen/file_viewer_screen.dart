@@ -115,6 +115,7 @@ class _FileViewerState extends State<_FileViewer> {
           OutlinedButton.icon(
             onPressed: () async {
               final OpenResult result = await OpenFile.open(widget.file.item.path);
+              if (!context.mounted) return;
 
               if (result.type != ResultType.done) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This file can't be open")));

@@ -7,7 +7,6 @@ import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/data/model/vault_item.dart";
-import "package:vault/file_system_entity_extension.dart";
 import "package:vault/ui/core/screen/file_viewer_screen.dart";
 import "package:vault/ui/core/screen/vault_settings_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
@@ -268,9 +267,9 @@ class _DownloadDialogState extends State<DownloadDialog> {
     try {
       await _download();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download failed: $e")));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download failed: $e")));
     } finally {
-      Navigator.pop(context);
+      if (mounted) Navigator.pop(context);
     }
   }
 
@@ -279,7 +278,8 @@ class _DownloadDialogState extends State<DownloadDialog> {
           _urlController.text,
           filename: _fileNameController.text.isEmpty ? null : _fileNameController.text,
         );
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download has been successful")));
+
+    if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download has been successful")));
   }
 }
 
