@@ -1,5 +1,5 @@
 import "package:flutter_test/flutter_test.dart";
 
 void main() {
-  test('nothing to test', () => expect(true, true));
+  test("nothing to test", () => expect(true, true));
 }
