@@ -1,7 +1,10 @@
 import "dart:io";
 
 import "package:chewie/chewie.dart";
+import "package:dartx/dartx_io.dart";
 import "package:flutter/material.dart";
+import "package:gap/gap.dart";
+import "package:open_file/open_file.dart";
 import "package:provider/provider.dart";
 import "package:vault/data/model/vault_item.dart";
 import "package:vault/file_system_entity_extension.dart";
@@ -52,18 +55,20 @@ class _FileViewer extends StatefulWidget {
 }
 
 class _FileViewerState extends State<_FileViewer> {
-  late final ChewieController _chewieController;
-  late final VideoPlayerController _videoPlayerController;
+  ChewieController? _chewieController;
+  VideoPlayerController? _videoPlayerController;
   double? aspectRatio;
 
   @override
   void initState() {
     super.initState();
+    if (!widget.file.item.isVideo) return;
+
     _videoPlayerController = VideoPlayerController.file(widget.file.item as File);
-    _videoPlayerController.addListener(_listenForAspectRatio);
+    _videoPlayerController!.addListener(_listenForAspectRatio);
 
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
+      videoPlayerController: _videoPlayerController!,
       autoPlay: true,
       looping: true,
       showControlsOnInitialize: false,
@@ -72,15 +77,15 @@ class _FileViewerState extends State<_FileViewer> {
 
   @override
   void dispose() {
-    _videoPlayerController.removeListener(_listenForAspectRatio);
-    _videoPlayerController.dispose();
-    _chewieController.dispose();
+    _videoPlayerController?.removeListener(_listenForAspectRatio);
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
   void _listenForAspectRatio() {
-    if (!_videoPlayerController.value.isInitialized) return;
-    aspectRatio = _videoPlayerController.value.aspectRatio;
+    if (!_videoPlayerController!.value.isInitialized) return;
+    aspectRatio = _videoPlayerController!.value.aspectRatio;
     setState(() {});
   }
 
@@ -92,10 +97,34 @@ class _FileViewerState extends State<_FileViewer> {
       if (aspectRatio == null) return Center(child: CircularProgressIndicator());
       return AspectRatio(
         aspectRatio: aspectRatio!,
-        child: Chewie(controller: _chewieController),
+        child: Chewie(controller: _chewieController!),
       );
     }
 
-    return Placeholder();
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.broken_image,
+            size: 128,
+          ),
+          Gap(8),
+          Text(widget.file.item.name),
+          Gap(16),
+          OutlinedButton.icon(
+            onPressed: () async {
+              final OpenResult result = await OpenFile.open(widget.file.item.path);
+
+              if (result.type != ResultType.done) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This file can't be open")));
+              }
+            },
+            label: Text("Open File"),
+            icon: Icon(Icons.file_open),
+          ),
+        ],
+      ),
+    );
   }
 }
