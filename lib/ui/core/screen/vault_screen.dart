@@ -113,9 +113,9 @@ class VaultScreen extends StatelessWidget {
                         heroTag: null,
                         onPressed: viewModel.deleteSelection,
                         child: Icon(Icons.delete),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               )
             : ExpandableFab(
