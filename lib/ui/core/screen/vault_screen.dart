@@ -101,10 +101,22 @@ class VaultScreen extends StatelessWidget {
         ),
         floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: viewModel.isSelectionActive
-            ? FloatingActionButton.extended(
-                onPressed: viewModel.deleteSelection,
-                label: Text("Delete"),
-                icon: Icon(Icons.delete),
+            ? ExpandableFab(
+                childrenAnimation: ExpandableFabAnimation.none,
+                initialOpen: true,
+                children: [
+                  Row(
+                    children: [
+                      Text("Delete"),
+                      Gap(8),
+                      FloatingActionButton(
+                        heroTag: null,
+                        onPressed: viewModel.deleteSelection,
+                        child: Icon(Icons.delete),
+                      )
+                    ],
+                  )
+                ],
               )
             : ExpandableFab(
                 type: ExpandableFabType.up,
