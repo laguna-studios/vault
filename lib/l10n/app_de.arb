@@ -1,0 +1,12 @@
+{
+    "openVault": "Tresor öffnen",
+    "howToCreateAVault": "Wie erstelle ich einen Tresor?",
+    "findASecretThatOnlyYouKnow": "1. Denke dir ein geheimes Passwort aus.",
+    "enterItAsYourVaultSecret": "2. Tippe es als dein Passwort ein.",
+    "clickOpenVault": "3. Drücke 'Tresor öffnen'.",
+    "congratsYoureDoneYouCreatedAVault": "4. Herzlichen Glückwunsch! Du hast einen Tresor erstellt.",
+    "gotIt": "Verstanden",
+    "howTo": "Anleitung",
+    "thisFileCantBeOpen": "Die Datei kann nicht geöffnet werden.",
+    "openFile": "Datei öffnen"
+}

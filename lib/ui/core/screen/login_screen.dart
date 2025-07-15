@@ -10,6 +10,7 @@ import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/data/repository/vault_repository.dart";
 import "package:vault/data/service/vault_datasource.dart";
+import "package:vault/l10n/app_localizations.dart";
 import "package:vault/ui/core/promo_drawer.dart";
 import "package:vault/ui/core/screen/vault_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               side: WidgetStatePropertyAll(BorderSide(color: Colors.white)),
                             ),
-                            child: Text("Open Vault"),
+                            child: Text(AppLocalizations.of(context)!.openVault),
                           ),
                         ),
                       ),
@@ -130,28 +131,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                           children: [
                                             Align(
                                               child: Text(
-                                                "How To Create A Vault",
+                                                AppLocalizations.of(context)!.howToCreateAVault,
                                                 style: Theme.of(context).textTheme.headlineMedium,
                                               ),
                                             ),
                                             Gap(16),
                                             Text(
-                                              "1. Find a secret that only you know.",
+                                              AppLocalizations.of(context)!.findASecretThatOnlyYouKnow,
                                               style: Theme.of(context).textTheme.bodyLarge,
                                             ),
                                             Gap(4),
                                             Text(
-                                              "2. Enter it as your vault secret.",
+                                              AppLocalizations.of(context)!.enterItAsYourVaultSecret,
                                               style: Theme.of(context).textTheme.bodyLarge,
                                             ),
                                             Gap(4),
                                             Text(
-                                              "3. Click 'Open Vault'.",
+                                              AppLocalizations.of(context)!.clickOpenVault,
                                               style: Theme.of(context).textTheme.bodyLarge,
                                             ),
                                             Gap(4),
                                             Text(
-                                              "4. Congrats! You' re done. You created a vault.",
+                                              AppLocalizations.of(context)!.congratsYoureDoneYouCreatedAVault,
                                               style: Theme.of(context).textTheme.bodyLarge,
                                             ),
                                             Gap(8),
@@ -173,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               );
                             },
-                            child: Text("How To?"),
+                            child: Text(AppLocalizations.of(context)!.howTo),
                           ),
                         ),
                       ),

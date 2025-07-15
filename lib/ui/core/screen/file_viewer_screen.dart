@@ -8,6 +8,7 @@ import "package:open_file/open_file.dart";
 import "package:provider/provider.dart";
 import "package:vault/data/model/vault_item.dart";
 import "package:vault/file_system_entity_extension.dart";
+import "package:vault/l10n/app_localizations.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
 import "package:video_player/video_player.dart";
 
@@ -118,10 +119,10 @@ class _FileViewerState extends State<_FileViewer> {
               if (!context.mounted) return;
 
               if (result.type != ResultType.done) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This file can't be open")));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.thisFileCantBeOpen)));
               }
             },
-            label: Text("Open File"),
+            label: Text(AppLocalizations.of(context)!.openFile),
             icon: Icon(Icons.file_open),
           ),
         ],

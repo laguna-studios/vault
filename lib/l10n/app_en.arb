@@ -1,0 +1,12 @@
+{
+    "openVault": "Open Vault",
+    "howToCreateAVault": "How To Create A Vault",
+    "findASecretThatOnlyYouKnow": "1. Find a secret that only you know.",
+    "enterItAsYourVaultSecret": "2. Enter it as your vault secret.",
+    "clickOpenVault": "3. Click 'Open Vault'.",
+    "congratsYoureDoneYouCreatedAVault": "4. Congrats! You' re done. You created a vault.",
+    "gotIt": "Got It",
+    "howTo": "How To?",
+    "thisFileCantBeOpen": "This file can't be open",
+    "openFile": "Open File"
+}
