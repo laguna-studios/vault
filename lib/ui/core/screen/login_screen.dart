@@ -209,11 +209,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     _controller.clear();
-
-    InAppReview.instance.isAvailable().then((available) {
-      if (!available) return;
-      if (Random().nextInt(100) < 90) return;
-      InAppReview.instance.requestReview();
-    });
   }
 }
