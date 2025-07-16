@@ -157,6 +157,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open File'**
   String get openFile;
+
+  /// No description provided for @myVault.
+  ///
+  /// In en, this message translates to:
+  /// **'My Vault'**
+  String get myVault;
+
+  /// No description provided for @goToParentDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Go To Parent Directory'**
+  String get goToParentDirectory;
+
+  /// No description provided for @noItemsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Items Yet'**
+  String get noItemsYet;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @addFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add File'**
+  String get addFile;
+
+  /// No description provided for @downloadFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Download File'**
+  String get downloadFile;
+
+  /// No description provided for @newFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'New Folder'**
+  String get newFolder;
+
+  /// No description provided for @createNewFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Folder'**
+  String get createNewFolder;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @url.
+  ///
+  /// In en, this message translates to:
+  /// **'URL'**
+  String get url;
+
+  /// No description provided for @optionalFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'(Optional) File Name'**
+  String get optionalFileName;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed: {message}'**
+  String downloadFailed(Object message);
+
+  /// No description provided for @downloadHasBeenSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Download has been successful'**
+  String get downloadHasBeenSuccessful;
+
+  /// No description provided for @xFilesSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Files Selected'**
+  String xFilesSelected(Object count);
 }
 
 class _AppLocalizationsDelegate

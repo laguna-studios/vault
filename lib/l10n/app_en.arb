@@ -8,5 +8,21 @@
     "gotIt": "Got It",
     "howTo": "How To?",
     "thisFileCantBeOpen": "This file can't be open",
-    "openFile": "Open File"
+    "openFile": "Open File",
+    "myVault": "My Vault",
+    "goToParentDirectory": "Go To Parent Directory",
+    "noItemsYet": "No Items Yet",
+    "delete": "Delete",
+    "addFile": "Add File",
+    "downloadFile": "Download File",
+    "newFolder": "New Folder",
+    "createNewFolder": "Create New Folder",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "url": "URL",
+    "optionalFileName": "(Optional) File Name",
+    "download": "Download",
+    "downloadFailed": "Download failed: {message}",
+    "downloadHasBeenSuccessful": "Download has been successful",
+    "xFilesSelected": "{count} Files Selected"
 }

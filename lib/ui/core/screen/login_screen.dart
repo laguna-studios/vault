@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text("Got It"),
+                                                child: Text(AppLocalizations.of(context)!.gotIt),
                                               ),
                                             ),
                                             Gap(MediaQuery.of(context).padding.bottom),

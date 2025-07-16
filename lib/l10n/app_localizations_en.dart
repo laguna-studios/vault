@@ -39,4 +39,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openFile => 'Open File';
+
+  @override
+  String get myVault => 'My Vault';
+
+  @override
+  String get goToParentDirectory => 'Go To Parent Directory';
+
+  @override
+  String get noItemsYet => 'No Items Yet';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get addFile => 'Add File';
+
+  @override
+  String get downloadFile => 'Download File';
+
+  @override
+  String get newFolder => 'New Folder';
+
+  @override
+  String get createNewFolder => 'Create New Folder';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get url => 'URL';
+
+  @override
+  String get optionalFileName => '(Optional) File Name';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String downloadFailed(Object message) {
+    return 'Download failed: $message';
+  }
+
+  @override
+  String get downloadHasBeenSuccessful => 'Download has been successful';
+
+  @override
+  String xFilesSelected(Object count) {
+    return '$count Files Selected';
+  }
 }

@@ -7,6 +7,7 @@ import "package:gap/gap.dart";
 import "package:provider/provider.dart";
 import "package:vault/context_extension.dart";
 import "package:vault/data/model/vault_item.dart";
+import "package:vault/l10n/app_localizations.dart";
 import "package:vault/ui/core/screen/file_viewer_screen.dart";
 import "package:vault/ui/core/screen/vault_settings_screen.dart";
 import "package:vault/ui/viewmodel/vault_viewmodel.dart";
@@ -25,11 +26,11 @@ class VaultScreen extends StatelessWidget {
         appBar: viewModel.isSelectionActive
             ? AppBar(
                 leading: IconButton(onPressed: viewModel.cancelSelection, icon: Icon(Icons.cancel)),
-                title: Text("${viewModel.selectedFiles.length} Files Selected"),
+                title: Text(AppLocalizations.of(context)!.xFilesSelected(viewModel.selectedFiles.length)),
                 actions: [IconButton(onPressed: viewModel.selectAll, icon: Icon(Icons.select_all))],
               )
             : AppBar(
-                title: Text("My Vault"),
+                title: Text(AppLocalizations.of(context)!.myVault),
                 centerTitle: true,
                 bottom: PreferredSize(preferredSize: Size.zero, child: Text("/${viewModel.location}")),
                 actions: [
@@ -54,7 +55,7 @@ class VaultScreen extends StatelessWidget {
                 if (viewModel.location.isNotEmpty)
                   ListTile(
                     leading: Icon(Icons.arrow_upward),
-                    title: Text("Go To Parent Directory"),
+                    title: Text(AppLocalizations.of(context)!.goToParentDirectory),
                     onTap: viewModel.goUp,
                   ),
                 if (viewModel.items.isEmpty)
@@ -71,7 +72,7 @@ class VaultScreen extends StatelessWidget {
                               color: Colors.white24,
                             ),
                             Text(
-                              "No Items Yet",
+                              AppLocalizations.of(context)!.noItemsYet,
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white54),
                             ),
                           ],
@@ -107,7 +108,7 @@ class VaultScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Delete"),
+                      Text(AppLocalizations.of(context)!.delete),
                       Gap(8),
                       FloatingActionButton(
                         heroTag: null,
@@ -125,7 +126,7 @@ class VaultScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Add File"),
+                      Text(AppLocalizations.of(context)!.addFile),
                       Gap(8),
                       FloatingActionButton(
                         heroTag: null,
@@ -136,7 +137,7 @@ class VaultScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text("Download File"),
+                      Text(AppLocalizations.of(context)!.downloadFile),
                       Gap(8),
                       FloatingActionButton(
                         heroTag: null,
@@ -147,7 +148,7 @@ class VaultScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text("New Folder"),
+                      Text(AppLocalizations.of(context)!.newFolder),
                       Gap(8),
                       FloatingActionButton(
                         heroTag: null,
@@ -177,16 +178,16 @@ class VaultScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Create New Folder"),
+          title: Text(AppLocalizations.of(context)!.createNewFolder),
           content: TextField(controller: controller),
           actions: [
-            TextButton(onPressed: Navigator.of(context).pop, child: Text("Cancel")),
+            TextButton(onPressed: Navigator.of(context).pop, child: Text(AppLocalizations.of(context)!.cancel)),
             TextButton(
               onPressed: () {
                 viewModel.createDirectory(controller.text);
                 Navigator.of(context).pop();
               },
-              child: Text("OK"),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
           ],
         );
@@ -245,18 +246,19 @@ class _DownloadDialogState extends State<DownloadDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Download File"),
+      title: Text(AppLocalizations.of(context)!.downloadFile),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _urlController,
-            decoration: InputDecoration(border: OutlineInputBorder(), hintText: "URL"),
+            decoration: InputDecoration(border: OutlineInputBorder(), hintText: AppLocalizations.of(context)!.url),
           ),
           Gap(8),
           TextField(
             controller: _fileNameController,
-            decoration: InputDecoration(border: OutlineInputBorder(), hintText: "(Optional) File Name"),
+            decoration:
+                InputDecoration(border: OutlineInputBorder(), hintText: AppLocalizations.of(context)!.optionalFileName),
           ),
         ],
       ),
@@ -265,11 +267,11 @@ class _DownloadDialogState extends State<DownloadDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text("Cancel"),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: _tryDownloadAndPop,
-          child: Text("Download"),
+          child: Text(AppLocalizations.of(context)!.download),
         ),
       ],
     );
@@ -279,7 +281,10 @@ class _DownloadDialogState extends State<DownloadDialog> {
     try {
       await _download();
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download failed: $e")));
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.downloadFailed(e.toString()))));
+      }
     } finally {
       if (mounted) Navigator.pop(context);
     }
@@ -291,7 +296,10 @@ class _DownloadDialogState extends State<DownloadDialog> {
           filename: _fileNameController.text.isEmpty ? null : _fileNameController.text,
         );
 
-    if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download has been successful")));
+    if (mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.downloadHasBeenSuccessful)));
+    }
   }
 }
 

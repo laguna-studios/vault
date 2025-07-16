@@ -39,4 +39,56 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get openFile => 'Datei öffnen';
+
+  @override
+  String get myVault => 'Mein Tresor';
+
+  @override
+  String get goToParentDirectory => 'Ein Ordner zurück';
+
+  @override
+  String get noItemsYet => 'Keine Dateien vorhanden';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get addFile => 'Datei hinzufügen';
+
+  @override
+  String get downloadFile => 'Datei downloaden';
+
+  @override
+  String get newFolder => 'Neuer Ordner';
+
+  @override
+  String get createNewFolder => 'Neuer Ordner';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get url => 'URL';
+
+  @override
+  String get optionalFileName => '(Optional) Dateiname';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String downloadFailed(Object message) {
+    return 'Download fehlgeschlagen: $message';
+  }
+
+  @override
+  String get downloadHasBeenSuccessful => 'Download war erfolgreich';
+
+  @override
+  String xFilesSelected(Object count) {
+    return '$count Dateien ausgewählt';
+  }
 }

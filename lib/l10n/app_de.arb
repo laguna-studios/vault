@@ -8,5 +8,21 @@
     "gotIt": "Verstanden",
     "howTo": "Anleitung",
     "thisFileCantBeOpen": "Die Datei kann nicht geöffnet werden.",
-    "openFile": "Datei öffnen"
+    "openFile": "Datei öffnen",
+    "myVault": "Mein Tresor",
+    "goToParentDirectory": "Ein Ordner zurück",
+    "noItemsYet": "Keine Dateien vorhanden",
+    "delete": "Löschen",
+    "addFile": "Datei hinzufügen",
+    "downloadFile": "Datei downloaden",
+    "newFolder": "Neuer Ordner",
+    "createNewFolder": "Neuer Ordner",
+    "cancel": "Abbrechen",
+    "ok": "OK",
+    "url": "URL",
+    "optionalFileName": "(Optional) Dateiname",
+    "download": "Download",
+    "downloadFailed": "Download fehlgeschlagen: {message}",
+    "downloadHasBeenSuccessful": "Download war erfolgreich",
+    "xFilesSelected": "{count} Dateien ausgewählt"
 }
