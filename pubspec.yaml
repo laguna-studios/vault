@@ -1,7 +1,7 @@
 name: vault
 description: "app to store files encrypted"
 publish_to: 'none'
-version: 1.0.5+7
+version: 1.0.5+8
 
 environment:
   sdk: ^3.6.0
