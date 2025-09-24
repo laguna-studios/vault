@@ -51,23 +51,6 @@ class VaultSettingsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
             child: Text(
-              "Export",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Divider(
-            indent: 8,
-            endIndent: 8,
-          ),
-          ListTile(
-            leading: Icon(Icons.send),
-            title: Text("Export Vault"),
-            subtitle: Text("Copy all files to public device storage"),
-            onTap: null,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-            child: Text(
               "Danger Zone",
               style: Theme.of(context).textTheme.titleLarge,
             ),
