@@ -34,7 +34,12 @@ class VaultRepository {
     final Iterable<FileSystemEntity> items = await _vaultDatasource.listDirectory(join(_vault, path));
     final List<VaultItem> result = [];
     for (final item in items) {
+      try {
+        
       result.add(VaultItem(item: item, thumbnail: await _getThumbnail(item)));
+      } catch (e) {
+        print(e);
+      }
     }
 
     return result;

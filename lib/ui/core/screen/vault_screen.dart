@@ -52,6 +52,7 @@ class VaultScreen extends StatelessWidget {
 
             return Column(
               children: [
+                if (viewModel.hasError) Text(viewModel.error),
                 if (viewModel.location.isNotEmpty)
                   ListTile(
                     leading: Icon(Icons.arrow_upward),
