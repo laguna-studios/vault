@@ -38,7 +38,7 @@ class VaultRepository {
         
       result.add(VaultItem(item: item, thumbnail: await _getThumbnail(item)));
       } catch (e) {
-        print(e);
+        //print(e);
       }
     }
 
